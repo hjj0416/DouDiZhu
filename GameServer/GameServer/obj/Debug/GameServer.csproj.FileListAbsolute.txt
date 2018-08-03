@@ -6,3 +6,13 @@ C:\Users\Ahpily\Desktop\GameServer\GameServer\obj\Debug\GameServer.exe
 C:\Users\Ahpily\Desktop\GameServer\GameServer\obj\Debug\GameServer.pdb
 C:\Users\Ahpily\Desktop\GameServer\GameServer\bin\Debug\AhpilyServer.dll
 C:\Users\Ahpily\Desktop\GameServer\GameServer\bin\Debug\AhpilyServer.pdb
+D:\Unity\DouDiZhu\GameServer\GameServer\obj\Debug\GameServer.csprojAssemblyReference.cache
+D:\Unity\DouDiZhu\GameServer\GameServer\obj\Debug\GameServer.csproj.CoreCompileInputs.cache
+D:\Unity\DouDiZhu\GameServer\GameServer\obj\Debug\GameServer.exe
+D:\Unity\DouDiZhu\GameServer\GameServer\obj\Debug\GameServer.pdb
+D:\Unity\DouDiZhu\GameServer\GameServer\bin\Debug\GameServer.exe.config
+D:\Unity\DouDiZhu\GameServer\GameServer\bin\Debug\GameServer.exe
+D:\Unity\DouDiZhu\GameServer\GameServer\bin\Debug\GameServer.pdb
+D:\Unity\DouDiZhu\GameServer\GameServer\bin\Debug\AhpilyServer.dll
+D:\Unity\DouDiZhu\GameServer\GameServer\bin\Debug\AhpilyServer.pdb
+D:\Unity\DouDiZhu\GameServer\GameServer\obj\Debug\GameServer.csproj.CopyComplete

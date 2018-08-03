@@ -46,6 +46,7 @@
     <Compile Include="EncodeTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerPeer.cs" />
+    <Compile Include="SocketMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
