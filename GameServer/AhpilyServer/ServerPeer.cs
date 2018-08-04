@@ -57,9 +57,7 @@ namespace AhpilyServer
                 for (int i = 0; i < maxCount; i++)
                 {
                     tmpClientPeer = new ClientPeer();
-                    tmpClientPeer.ReciveArgs = new SocketAsyncEventArgs();
                     tmpClientPeer.ReciveArgs.Completed += recive_Completed;
-                    tmpClientPeer.ReciveArgs.UserToken = tmpClientPeer;
                     tmpClientPeer.reciveCompleted += reciveCompleted;
                     tmpClientPeer.sendDisconnect = Disconnect;
                     clientPeerPool.Enqueue(tmpClientPeer);
@@ -75,6 +73,7 @@ namespace AhpilyServer
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -119,7 +118,11 @@ namespace AhpilyServer
             //得到客户端的对象 
             ClientPeer client = clientPeerPool.Dequeue();
             client.ClientSocket=e.AcceptSocket;
-            //再进行保存处理
+
+            Console.WriteLine("客户端连接成功："+client.ClientSocket.RemoteEndPoint.ToString());
+
+            //开始接受数据
+            startRecive(client);
 
             e.AcceptSocket = null;
             startAccept(e);
@@ -144,6 +147,7 @@ namespace AhpilyServer
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -206,15 +210,18 @@ namespace AhpilyServer
             {
                 if (client == null)
                     throw new Exception("当前指定的客户端连接为空，无法断开连接！");
-                application.OnDisconnect(client);
 
+                Console.WriteLine(client.ClientSocket.RemoteEndPoint.ToString()+"客户端断开了连接，原因："+reason);
                 //通知应用层
+                application.OnDisconnect(client);
                 client.Disconnect();
+
                 clientPeerPool.Enqueue(client);
                 acceptSemaphore.Release();
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw;
             }
         }
         #endregion

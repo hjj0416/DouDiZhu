@@ -13,12 +13,12 @@ namespace AhpilyServer.Timers
 
     public class TimeModel
     {
-        private int Id;
+        public int Id;
 
         /// <summary>
         /// 任务执行时间
         /// </summary>
-        private long Time;
+        public long Time;
 
         public TimeDelegate timeDelegate;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AhpilyServer.Concurrent;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +35,12 @@ namespace AhpilyServer.Timers
         /// </summary>
         private List<int> removeList = new List<int>();
 
+        //表示id
+        private ConcurrentInt id = new ConcurrentInt(-1);
+
         public TimerMgr()
         {
-            timer = new Timer(1000);
+            timer = new Timer(10);
             timer.Elapsed += Timer_Elapsed;
         }
 
@@ -52,10 +56,28 @@ namespace AhpilyServer.Timers
                 removeList.Clear();
             }
 
-            foreach(var model in idModelDict.Values)
+            foreach (var model in idModelDict.Values)
             {
-                model.Run(); 
+                if (model.Time <= DateTime.Now.Ticks)
+                    model.Run();
             }
+        }
+
+        //添加定时任务 XX：XX：XX执行
+        public void AddTimerEvent(DateTime dateTime,TimeDelegate timeDelegate)
+        {
+           long delayTime=dateTime.Ticks - DateTime.Now.Ticks;
+            if (delayTime <= 0)
+                return;
+            AddTimeEvent(delayTime, timeDelegate);
+        }
+
+        //添加定时任务 XX时间后执行
+        public void AddTimeEvent(long delayTime,TimeDelegate timeDelegate)
+        {
+            TimeModel model = new TimeModel(id.Add_Get(),DateTime.Now.Ticks+delayTime,timeDelegate);
+            idModelDict.TryAdd(model.Id,model);
         }
     }
 }
+ 

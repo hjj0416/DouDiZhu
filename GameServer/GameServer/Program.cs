@@ -13,7 +13,7 @@ namespace GameServer
         {
             ServerPeer server = new ServerPeer();
             server.Start(6666, 10);
-
+            server.SetApplication(new NetMsgCenter());
             Console.ReadKey();
         }
     }

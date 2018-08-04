@@ -1,0 +1,5 @@
+D:\Unity\DouDiZhu\GameServer\Protocol\bin\Debug\Protocol.dll
+D:\Unity\DouDiZhu\GameServer\Protocol\bin\Debug\Protocol.pdb
+D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.csproj.CoreCompileInputs.cache
+D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.dll
+D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.pdb

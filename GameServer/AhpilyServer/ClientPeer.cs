@@ -18,8 +18,9 @@ namespace AhpilyServer
 
         public ClientPeer()
         {
-            this.ReciveArgs = new SocketAsyncEventArgs();
+            this.ReciveArgs = new SocketAsyncEventArgs();           
             this.ReciveArgs.UserToken = this;
+            this.ReciveArgs.SetBuffer(new byte[1024], 0, 1024);
             this.SendArgs = new SocketAsyncEventArgs();
             this.SendArgs.Completed += SendArgs_Completed;
         }

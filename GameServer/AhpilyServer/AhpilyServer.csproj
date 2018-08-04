@@ -43,10 +43,15 @@
   <ItemGroup>
     <Compile Include="ClientPeer.cs" />
     <Compile Include="ClientPeerPool.cs" />
+    <Compile Include="Concurrent\ConcurrentInt.cs" />
     <Compile Include="EncodeTool.cs" />
+    <Compile Include="IApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerPeer.cs" />
+    <Compile Include="SingleExecute.cs" />
     <Compile Include="SocketMessage.cs" />
+    <Compile Include="Timer\TimeModel.cs" />
+    <Compile Include="Timer\TimerMgr.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
