@@ -8,3 +8,4 @@ D:\Unity\DouDiZhu\GameServer\AhpilyServer\bin\Debug\AhpilyServer.pdb
 D:\Unity\DouDiZhu\GameServer\AhpilyServer\obj\Debug\AhpilyServer.csproj.CoreCompileInputs.cache
 D:\Unity\DouDiZhu\GameServer\AhpilyServer\obj\Debug\AhpilyServer.dll
 D:\Unity\DouDiZhu\GameServer\AhpilyServer\obj\Debug\AhpilyServer.pdb
+D:\Unity\DouDiZhu\GameServer\AhpilyServer\obj\Debug\AhpilyServer.csprojAssemblyReference.cache

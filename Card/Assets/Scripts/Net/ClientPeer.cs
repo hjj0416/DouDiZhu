@@ -7,20 +7,36 @@ using UnityEngine;
 public class ClientPeer {
 
     private Socket socket;
+
+    private string ip;
+    private int port;
+
     public ClientPeer(string ip,int port)
     {
         try
         {
             socket = new Socket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.Tcp);
-            socket.Connect(ip,port);
-            Debug.Log("连接服务器成功！");
-        
-            StartRecive();
+            this.ip = ip;
+            this.port = port;
         }
         catch (System.Exception e)
         {
             Debug.Log(e.Message);
             throw;
+        }
+    }
+
+    public void Connect()
+    {
+        try
+        {
+            socket.Connect(ip, port);
+            Debug.Log("连接服务器成功！");
+            StartRecive();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
         }
     }
 
@@ -93,11 +109,16 @@ public class ClientPeer {
     public void Send(int opCode,int subCode,object value)
     {
         SocketMessage msg = new SocketMessage(opCode,subCode,value);
+        Send(msg);
+        
+    }
+    public void Send(SocketMessage msg)
+    {
         byte[] data = EncodeTool.EncodeMsg(msg);
         byte[] packet = EncodeTool.EncodePacket(data);
         try
         {
-            socket.Send(packet );
+            socket.Send(packet);
         }
         catch (Exception e)
         {

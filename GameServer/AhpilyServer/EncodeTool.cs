@@ -112,7 +112,7 @@ namespace AhpilyServer
 
         public static object DecodeObj(byte[] valueBytes)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(valueBytes))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 object value = bf.Deserialize(ms);

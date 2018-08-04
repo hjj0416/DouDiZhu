@@ -10,18 +10,31 @@ public class NetManager : ManagerBase
     private void Awake()
     {
         Instance = this;
+        Add(0, this);
+    }
+
+    public override void Execute(int eventCode, object message)
+    {
+        switch (eventCode)
+        {
+            case 0:
+                client.Send(message as SocketMessage);
+                break;
+            default:
+                break;
+        }
     }
 
     private void Start()
     {
-        Connected("127.0.0.1",6666);
+        Connected(); 
     }
 
-    private ClientPeer client;
+    private ClientPeer client = new ClientPeer("127.0.0.1", 6666);
 
-    public void Connected(string ip,int port)
+    public void Connected()
     {
-        client = new ClientPeer(ip,port);
+        client.Connect();
     }
 
     private void Update()

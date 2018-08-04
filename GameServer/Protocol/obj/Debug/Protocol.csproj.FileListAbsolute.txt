@@ -3,3 +3,6 @@ D:\Unity\DouDiZhu\GameServer\Protocol\bin\Debug\Protocol.pdb
 D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.csproj.CoreCompileInputs.cache
 D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.dll
 D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.pdb
+D:\Unity\DouDiZhu\GameServer\Protocol\obj\Debug\Protocol.csprojAssemblyReference.cache
+D:\Unity\DouDiZhu\Card\Assets\Plugins\Protocol.dll
+D:\Unity\DouDiZhu\Card\Assets\Plugins\Protocol.pdb

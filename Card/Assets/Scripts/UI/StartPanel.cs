@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Protocol.Dto;
+using Protocol.code;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +57,10 @@ public class StartPanel : UIBase {
             || inputPsaaword.text.Length < 6
             || inputPsaaword.text.Length > 16)
             return;
+
+        AccountDto dto = new AccountDto(inputAccount.text, inputPsaaword.text);
+        SocketMessage socketMsg = new SocketMessage(OpCode.ACCOUNT, AccountCode.LOGIN, dto);
+        Dispatch(AreaCode.NET, 0, socketMsg);
     }
 
     void CloseClick()

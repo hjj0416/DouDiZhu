@@ -166,3 +166,5 @@ D:\Unity\DouDiZhu\Card\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 D:\Unity\DouDiZhu\Card\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 D:\Unity\DouDiZhu\Card\obj\Debug\Assembly-CSharp.dll
 D:\Unity\DouDiZhu\Card\obj\Debug\Assembly-CSharp.pdb
+D:\Unity\DouDiZhu\Card\Temp\bin\Debug\Protocol.dll
+D:\Unity\DouDiZhu\Card\Temp\bin\Debug\Protocol.pdb

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Protocol.code;
+using Protocol.Dto;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,8 +62,12 @@ public class RegistPanel : UIBase {
         if (string.IsNullOrEmpty(inputPwd2.text)
             || (inputPwd2.text != inputPwd.text))
             return;
-    }
 
+        AccountDto dto = new AccountDto(inputAcc.text, inputPwd.text);
+        SocketMessage socketMsg = new SocketMessage(OpCode.ACCOUNT, AccountCode.LOGIN, dto);
+        Dispatch(AreaCode.NET, 0, socketMsg);
+    }
+     
     void CloseClick()
     {
         setPanelActive(false);

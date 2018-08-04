@@ -292,6 +292,9 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/HJJ/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="Protocol">
+      <HintPath>D:/Unity/DouDiZhu/Card/Assets/Plugins/Protocol.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>E:/Program/Unity2018/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>
     </Reference>
