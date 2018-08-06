@@ -69,13 +69,28 @@
     <Compile Include="Assets\Scripts\Framework\ManagerBase.cs" />
     <Compile Include="Assets\Scripts\Framework\MonoBase.cs" />
     <Compile Include="Assets\Scripts\Framework\MsgCenter.cs" />
+    <Compile Include="Assets\Scripts\Model\GameModel.cs" />
+    <Compile Include="Assets\Scripts\Model\Models.cs" />
     <Compile Include="Assets\Scripts\Net\ClientPeer.cs" />
     <Compile Include="Assets\Scripts\Net\EncodeTool.cs" />
+    <Compile Include="Assets\Scripts\Net\HandlerBase.cs" />
+    <Compile Include="Assets\Scripts\Net\Impl\AccoutHandler.cs" />
+    <Compile Include="Assets\Scripts\Net\Impl\UserHandler.cs" />
+    <Compile Include="Assets\Scripts\Net\Msg\NetSendMsg.cs" />
     <Compile Include="Assets\Scripts\Net\NetManager.cs" />
-    <Compile Include="Assets\Scripts\Net\SocketMessage.cs" />
-    <Compile Include="Assets\Scripts\UI\PlayPanel.cs" />
-    <Compile Include="Assets\Scripts\UI\RegistPanel.cs" />
-    <Compile Include="Assets\Scripts\UI\StartPanel.cs" />
+    <Compile Include="Assets\Scripts\Net\SocketMsg.cs" />
+    <Compile Include="Assets\Scripts\Scene\Msg\LoadSceneMsg.cs" />
+    <Compile Include="Assets\Scripts\Scene\SceneEvent.cs" />
+    <Compile Include="Assets\Scripts\Scene\SceneMgr.cs" />
+    <Compile Include="Assets\Scripts\UI\Lgoin\PlayPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Lgoin\RegistPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Lgoin\StartPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Main\CreatePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Main\InfoPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Main\MatchPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Main\SettingPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Msg\PromptMsg.cs" />
+    <Compile Include="Assets\Scripts\UI\PromptPanel.cs" />
     <Compile Include="Assets\Scripts\UI\UIBase.cs" />
     <Compile Include="Assets\Scripts\UI\UIEvent.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
@@ -286,14 +301,14 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>E:/Program/Unity2018/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Protocol">
+      <HintPath>D:/Unity/DouDiZhu/Card/Assets/Plugins/Protocol.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>C:/Users/HJJ/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/HJJ/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Protocol">
-      <HintPath>D:/Unity/DouDiZhu/Card/Assets/Plugins/Protocol.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>E:/Program/Unity2018/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

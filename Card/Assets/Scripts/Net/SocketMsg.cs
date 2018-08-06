@@ -5,7 +5,7 @@ using System.Text;
 
 
     //网络消息
-    public class SocketMessage
+    public class SocketMsg
     {
         //操作码
         public int OpCode { get; set; }
@@ -14,16 +14,23 @@ using System.Text;
         //参数
         public object Value { get; set; }
 
-        public SocketMessage()
+        public SocketMsg()
         {
 
         }
 
-        public SocketMessage(int opCode,int subCode,object value)
+        public SocketMsg(int opCode,int subCode,object value)
         {
             this.OpCode = opCode;
             this.SubCode = subCode;
             this.Value = value;
         }
+
+    public void Change(int opCode, int subCode, object value)
+    {
+        this.OpCode = opCode;
+        this.SubCode = subCode;
+        this.Value = value;
     }
+}
 

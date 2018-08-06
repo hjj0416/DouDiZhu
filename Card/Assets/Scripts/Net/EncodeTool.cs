@@ -38,7 +38,7 @@ using System.Runtime.Serialization.Formatters.Binary;
                 {
                     int length = br.ReadInt32();
                     int dataRemainLength = (int)(ms.Length - ms.Position);
-                    if (length > ms.Length - ms.Position)
+                    if (length > dataRemainLength)
                         return null;
                     //throw new Exception("数据长度不够约定的长度 不能构成一个完整的消息");
 
@@ -55,7 +55,7 @@ using System.Runtime.Serialization.Formatters.Binary;
         #endregion
 
         #region 构造发送的SocketMessage类
-        public static byte[] EncodeMsg(SocketMessage msg)
+        public static byte[] EncodeMsg(SocketMsg msg)
         {
             MemoryStream ms = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(ms);
@@ -75,11 +75,11 @@ using System.Runtime.Serialization.Formatters.Binary;
             return data;
         }
 
-        public static SocketMessage DecodeMsg(byte[] data)
+        public static SocketMsg DecodeMsg(byte[] data)
         {
             MemoryStream ms = new MemoryStream(data);
             BinaryReader br = new BinaryReader(ms);
-            SocketMessage msg = new SocketMessage();
+            SocketMsg msg = new SocketMsg();
             msg.OpCode = br.ReadInt32();
             msg.SubCode = br.ReadInt32();
             //还有剩余的数据   
@@ -110,7 +110,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
         public static object DecodeObj(byte[] valueBytes)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream(valueBytes))
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 object value = bf.Deserialize(ms);

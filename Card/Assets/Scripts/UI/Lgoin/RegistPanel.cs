@@ -13,9 +13,11 @@ public class RegistPanel : UIBase {
     private InputField inputPwd;
     private InputField inputPwd2;
 
+    private PromptMsg promptMsg;
+    private SocketMsg socketMsg;
     private void Awake()
     {
-        Bind(UIEvent.REGIST_PANEL_ACTIVE);
+        
     }
 
     public override void Execute(int eventCode, object message)
@@ -32,6 +34,7 @@ public class RegistPanel : UIBase {
 
     // Use this for initialization
     void Start () {
+        Bind(UIEvent.REGIST_PANEL_ACTIVE);
         btnRegist = transform.Find("BtnRegist").GetComponent<Button>();
         btnClose = transform.Find("BtnClose").GetComponent<Button>();
 
@@ -42,6 +45,8 @@ public class RegistPanel : UIBase {
         btnRegist.onClick.AddListener(RegistClick);
         btnClose.onClick.AddListener(CloseClick);
 
+        promptMsg = new PromptMsg();
+        socketMsg = new SocketMsg();
         setPanelActive(false);
     }
 
@@ -54,17 +59,36 @@ public class RegistPanel : UIBase {
     void RegistClick()
     {
         if (string.IsNullOrEmpty(inputAcc.text))
+        {
+            promptMsg.Change("帐号不能为空！", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("帐号不能为空！");
             return;
-        if (string.IsNullOrEmpty(inputPwd.text)
-            || inputPwd.text.Length < 6
-            || inputPwd.text.Length > 16)
+        }
+        if (string.IsNullOrEmpty(inputPwd.text)|| string.IsNullOrEmpty(inputPwd2.text))
+        {
+            promptMsg.Change("密码不能为空", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("密码不能为空");
             return;
-        if (string.IsNullOrEmpty(inputPwd2.text)
-            || (inputPwd2.text != inputPwd.text))
+        }
+        if(inputPwd.text.Length < 4|| inputPwd.text.Length > 16)
+        {
+            promptMsg.Change("密码位数在4-16位之间", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("密码位数在4-16位之间");
             return;
+        }
+        if ((inputPwd2.text != inputPwd.text))
+        {
+            promptMsg.Change("两次输入的密码不一致！", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("两次输入的密码不一致！");
+            return;
+        }
 
         AccountDto dto = new AccountDto(inputAcc.text, inputPwd.text);
-        SocketMessage socketMsg = new SocketMessage(OpCode.ACCOUNT, AccountCode.LOGIN, dto);
+        socketMsg.Change(OpCode.ACCOUNT, AccountCode.REGIST_CREQ, dto);
         Dispatch(AreaCode.NET, 0, socketMsg);
     }
      

@@ -40,7 +40,7 @@ public class ManagerBase : MonoBase
     ///             动画模块 也需要关心  控制角色播放动画    
     ///             音效模块 也需要关心  控制角色移动的音效播放 走路声
     /// </summary>
-    private Dictionary<int,List<MonoBase>> dict = new Dictionary<int, List<MonoBase>>();
+    private Dictionary<int, List<MonoBase>> dict = new Dictionary<int, List<MonoBase>>();
 
     /// <summary>
     /// 添加事件

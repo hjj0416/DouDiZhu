@@ -12,6 +12,8 @@ public class StartPanel : UIBase {
     private InputField inputAccount;
     private InputField inputPsaaword;
 
+    private PromptMsg promptMsg;
+    private SocketMsg socketMsg;
     private void Awake()
     {
         Bind(UIEvent.START_PANEL_ACTIVE);
@@ -40,6 +42,8 @@ public class StartPanel : UIBase {
         btnLogin.onClick.AddListener(LoginClick);
         btnClose.onClick.AddListener(CloseClick);
 
+        promptMsg = new PromptMsg();
+        socketMsg = new SocketMsg();
         setPanelActive(false);
 	}
 
@@ -52,14 +56,29 @@ public class StartPanel : UIBase {
     void LoginClick()
     {
         if (string.IsNullOrEmpty(inputAccount.text))
+        {
+            promptMsg.Change("用户名不能为空",Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("帐号不能为空！");
             return;
-        if (string.IsNullOrEmpty(inputPsaaword.text)
-            || inputPsaaword.text.Length < 6
-            || inputPsaaword.text.Length > 16)
+        }
+        if (string.IsNullOrEmpty(inputPsaaword.text))
+        {
+            promptMsg.Change("密码不能为空", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("密码不能为空");
             return;
+        }
+        if(inputAccount.text.Length<4||inputPsaaword.text.Length>16)
+        {
+            promptMsg.Change("密码长度应该在4-16位之间", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            Debug.Log("密码长度应该在4-16位之间");
+            return;
+        }
 
         AccountDto dto = new AccountDto(inputAccount.text, inputPsaaword.text);
-        SocketMessage socketMsg = new SocketMessage(OpCode.ACCOUNT, AccountCode.LOGIN, dto);
+        socketMsg.Change(OpCode.ACCOUNT, AccountCode.LOGIN, dto);
         Dispatch(AreaCode.NET, 0, socketMsg);
     }
 
