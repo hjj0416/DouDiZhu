@@ -1,4 +1,4 @@
-﻿using Protocol.code;
+﻿using Protocol.Code;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +13,7 @@ public class AccoutHandler : HandlerBase
                 loginResponse((int)value);
                 break;
 
-            case AccountCode.REGITS_SRES:
+            case AccountCode.REGIST_SRES:
                 registResponse((int)value);
                 break;
             default:

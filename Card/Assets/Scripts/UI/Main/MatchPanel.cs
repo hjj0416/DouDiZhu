@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Protocol.Code;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,10 +29,12 @@ public class MatchPanel : UIBase
     private Button btnCancel;
     private Button btnEnter;
 
+    private SocketMsg socketMsg;
+
     // Use this for initialization
     void Start()
     {
-
+        socketMsg = new SocketMsg();
 
         imgBg = transform.Find("ImgBg").GetComponent<Image>();
         txtDes = transform.Find("txtDes").GetComponent<Text>();
@@ -39,6 +42,7 @@ public class MatchPanel : UIBase
         btnEnter = transform.Find("btnEnter").GetComponent<Button>();
 
         btnCancel.onClick.AddListener(cancelClick);
+        btnEnter.onClick.AddListener(EnterClick);
 
         setPanelActive(false);
     }
@@ -60,20 +64,24 @@ public class MatchPanel : UIBase
     public override void OnDestroy()
     {
         btnCancel.onClick.RemoveListener(cancelClick);
+        btnEnter.onClick.RemoveAllListeners();
+    }
+
+    private void EnterClick()
+    {
+        Dispatch(AreaCode.SENCE,SceneEvent.LOAD_SCENE,new LoadSceneMsg(2,null));
     }
 
     private void matchClick()
     {
-        //向服务器发起开始匹配的请求
-        //TODO
-
         setObjectsActive(true);
     }
 
     private void cancelClick()
     {
         //向服务器发起离开匹配的请求
-        //TODO
+        socketMsg.Change(OpCode.MATCH, MatchCode.LEAVE_CREQ, null);
+        Dispatch(AreaCode.NET, 0, socketMsg);
 
         setPanelActive(false);
     }

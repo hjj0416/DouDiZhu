@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AhpilyServer;
 using GameServer.Cache;
 using GameServer.Model;
-using Protocol.code;
+using Protocol.Code;
 using Protocol.Dto;
 
 namespace GameServer.Logic
@@ -26,13 +26,13 @@ namespace GameServer.Logic
         {
             switch (subCode)
             {
-                case UserCode.CREATE_CERQ:
+                case UserCode.CREATE_CREQ:
                     Create(client,value.ToString());
                     break;
                 case UserCode.GET_INFO_CREQ:
                     GetInfo(client);
                     break;
-                case UserCode.ONLINE_CERQ:
+                case UserCode.ONLINE_CREQ:
                     Online(client);
                     break;
                 default:
@@ -95,7 +95,7 @@ namespace GameServer.Logic
                 //上线角色
                 Online(client);
                 UserModel model = userCache.GetModelByAccountId(accountId);
-                UserDto dto = new UserDto(model.Name,model.Been,model.WinCount,model.LoseCount,model.RunCount,model.Lv,model.Exp);
+                UserDto dto = new UserDto(model.Id,model.Name,model.Been,model.WinCount,model.LoseCount,model.RunCount,model.Lv,model.Exp);
                 client.Send(OpCode.USER, UserCode.GET_INFO_SRES, dto);
             });
         }
@@ -124,7 +124,7 @@ namespace GameServer.Logic
                 int userId = userCache.GetId(accountId);
                 userCache.Online(client, userId);
                 client.Send(OpCode.USER, UserCode.ONLINE_SRES, 0);//上线成功
-                Console.WriteLine("上线---上线成功");
+                Console.WriteLine(string.Format("上线---上线成功，当前在线玩家：{0}人",accountCache.GetOnlineNum()));
             });
 
         }

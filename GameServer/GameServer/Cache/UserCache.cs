@@ -80,6 +80,15 @@ namespace GameServer.Cache
         }
 
         /// <summary>
+        /// 更新角色数据
+        /// </summary>
+        /// <param name="model"></param>
+        public void Update(UserModel model)
+        {
+            idModelDict[model.Id] = model;
+        }
+
+        /// <summary>
         /// 角色上线
         /// </summary>
         /// <param name="client"></param>
@@ -111,6 +120,17 @@ namespace GameServer.Cache
             int id = clientIdDict[client];
             UserModel model = idModelDict[id];
             return model;
+        }
+
+        /// <summary>
+        /// 根据用户id获取数据模型
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public UserModel GetModelById(int userId)
+        {
+            UserModel user = idModelDict[userId];
+            return user;
         }
 
         /// <summary>

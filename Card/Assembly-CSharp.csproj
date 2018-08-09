@@ -62,7 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Audio\AudioBase.cs" />
+    <Compile Include="Assets\Scripts\Audio\AudioEvent.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Audio\EffectAudio.cs" />
+    <Compile Include="Assets\Scripts\Character\CardCtrl.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterBase.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterManager.cs" />
     <Compile Include="Assets\Scripts\Framework\AreaCode.cs" />
@@ -75,6 +78,9 @@
     <Compile Include="Assets\Scripts\Net\EncodeTool.cs" />
     <Compile Include="Assets\Scripts\Net\HandlerBase.cs" />
     <Compile Include="Assets\Scripts\Net\Impl\AccoutHandler.cs" />
+    <Compile Include="Assets\Scripts\Net\Impl\ChatHandler.cs" />
+    <Compile Include="Assets\Scripts\Net\Impl\FightHandler.cs" />
+    <Compile Include="Assets\Scripts\Net\Impl\MatchHandler.cs" />
     <Compile Include="Assets\Scripts\Net\Impl\UserHandler.cs" />
     <Compile Include="Assets\Scripts\Net\Msg\NetSendMsg.cs" />
     <Compile Include="Assets\Scripts\Net\NetManager.cs" />
@@ -82,6 +88,12 @@
     <Compile Include="Assets\Scripts\Scene\Msg\LoadSceneMsg.cs" />
     <Compile Include="Assets\Scripts\Scene\SceneEvent.cs" />
     <Compile Include="Assets\Scripts\Scene\SceneMgr.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\ButtonPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\LeftStatePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\MyStatePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\RightStatePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\StatePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Fight\UpPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Lgoin\PlayPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Lgoin\RegistPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Lgoin\StartPanel.cs" />
@@ -89,6 +101,7 @@
     <Compile Include="Assets\Scripts\UI\Main\InfoPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Main\MatchPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Main\SettingPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Msg\ChatMsg.cs" />
     <Compile Include="Assets\Scripts\UI\Msg\PromptMsg.cs" />
     <Compile Include="Assets\Scripts\UI\PromptPanel.cs" />
     <Compile Include="Assets\Scripts\UI\UIBase.cs" />

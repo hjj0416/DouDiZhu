@@ -56,6 +56,7 @@ public class SceneMgr:ManagerBase
     {
         if (OnSceneLoaded != null)
             OnSceneLoaded();
+        OnSceneLoaded = null;
     }
 }
 

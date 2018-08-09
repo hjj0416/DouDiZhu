@@ -133,5 +133,14 @@ namespace GameServer.Cache
             AccountModel model = accModelDict[account];
             return model.Id;
         }
+
+        /// <summary>
+        /// 获取在线玩家数量
+        /// </summary>
+        /// <returns></returns>
+        public int GetOnlineNum()
+        {
+            return accClientDict.Count();
+        }
     }
 }

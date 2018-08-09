@@ -1,4 +1,5 @@
-﻿using Protocol.Dto;
+﻿using Protocol.Code;
+using Protocol.Dto;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class InfoPanel : UIBase {
     private Text txtBeen;
     private Button BtnSet;
     private Button BtnMatch;
+
+    private SocketMsg socketMsg;
 
     private void Awake()
     {
@@ -45,6 +48,8 @@ public class InfoPanel : UIBase {
 
         BtnSet.onClick.AddListener(BtnSetClick);
         BtnMatch.onClick.AddListener(BtnMatchClick);
+
+        socketMsg = new SocketMsg();
     }
 
     public override void OnDestroy()
@@ -61,6 +66,9 @@ public class InfoPanel : UIBase {
     void BtnMatchClick()
     {
         Dispatch(AreaCode.UI,UIEvent.MATCH_PANEL_ACTIVE,true);
+        //向服务器发起开始匹配的请求
+        socketMsg.Change(OpCode.MATCH, MatchCode.ENTER_CREQ, null);
+        Dispatch(AreaCode.NET, 0, socketMsg);
     }
 	
     /// <summary>

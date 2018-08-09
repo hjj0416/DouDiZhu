@@ -45,11 +45,18 @@
   <ItemGroup>
     <Compile Include="Cache\AccountCache.cs" />
     <Compile Include="Cache\Caches.cs" />
+    <Compile Include="Cache\Fight\FightCache.cs" />
+    <Compile Include="Cache\Fight\FightRoom.cs" />
+    <Compile Include="Cache\Fight\LibraryModel.cs" />
+    <Compile Include="Cache\Fight\RoundModel.cs" />
     <Compile Include="Cache\Match\MatchCache.cs" />
     <Compile Include="Cache\Match\MatchRoom.cs" />
     <Compile Include="Cache\UserCache.cs" />
     <Compile Include="Logic\AccountHandler.cs" />
+    <Compile Include="Logic\ChatHandler.cs" />
+    <Compile Include="Logic\FightHandler.cs" />
     <Compile Include="Logic\IHandler.cs" />
+    <Compile Include="Logic\MatchHandler.cs" />
     <Compile Include="Logic\UserHandler.cs" />
     <Compile Include="Model\AccountModel.cs" />
     <Compile Include="Model\UserModel.cs" />

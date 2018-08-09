@@ -1,4 +1,4 @@
-﻿using Protocol.code;
+﻿using Protocol.Code;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +56,7 @@ public class CreatePanel : UIBase {
             Dispatch(AreaCode.UI,UIEvent.PROMPT_MSG,promptMsg);
         }
         //向服务器发送创建请求
-        socketMsg.Change(OpCode.USER, UserCode.CREATE_CERQ, InputName.text);
+        socketMsg.Change(OpCode.USER, UserCode.CREATE_CREQ, InputName.text);
         Dispatch(AreaCode.NET,0,socketMsg);
     }
 }

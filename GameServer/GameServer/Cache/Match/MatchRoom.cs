@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AhpilyServer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,15 @@ namespace GameServer.Cache.Match
         public int Id { get; private set; }
 
         //在房间内的用户id
-        public List<int> UIdList { get; private set; }
+        public Dictionary<int,ClientPeer> UIdClientDict { get; private set; }
+
+        public List<int> GetUIdList
+        {
+            get
+            {
+                return UIdClientDict.Keys.ToList();
+            }
+        }
 
         //已经准备的玩家id列表
         public List<int> ReadyUIdList { get; private set; }
@@ -20,7 +29,7 @@ namespace GameServer.Cache.Match
         public MatchRoom(int id)
         {
             this.Id = id;
-            this.UIdList = new List<int>();
+            this.UIdClientDict = new Dictionary<int, ClientPeer>();
             this.ReadyUIdList = new List<int>();
         }
 
@@ -30,7 +39,7 @@ namespace GameServer.Cache.Match
         /// <returns></returns>
         public bool IsFull()
         {
-            return UIdList.Count == 3;
+            return UIdClientDict.Count == 3;
         }
 
         /// <summary>
@@ -39,7 +48,7 @@ namespace GameServer.Cache.Match
         /// <returns></returns>
         public bool IsEmpty()
         {
-            return UIdList.Count == 0;
+            return UIdClientDict.Count == 0;
         }
 
         /// <summary>
@@ -55,9 +64,9 @@ namespace GameServer.Cache.Match
         /// 进入房间
         /// </summary>
         /// <param name="userId"></param>
-        public void Enter(int userId)
+        public void Enter(int userId,ClientPeer client)
         {
-            UIdList.Add(userId);
+            UIdClientDict.Add(userId,client);
         }
 
         /// <summary>
@@ -66,7 +75,7 @@ namespace GameServer.Cache.Match
         /// <param name="userId"></param>
         public void Leave(int userId)
         {
-            UIdList.Remove(userId);
+            UIdClientDict.Remove(userId);
         }
 
         /// <summary>
@@ -76,6 +85,26 @@ namespace GameServer.Cache.Match
         public void Ready(int userId)
         {
             ReadyUIdList.Add(userId);
+        }
+
+        /// <summary>
+        /// 广播房间内所有玩家的信息
+        /// </summary>
+        /// <param name="opCode"></param>
+        /// <param name="subCode"></param>
+        /// <param name="value"></param>
+        public void Brocast(int opCode,int subCode,object value,ClientPeer exClient=null)
+        {
+            SocketMessage msg = new SocketMessage(opCode, subCode, value);
+            byte[] data = EncodeTool.EncodeMsg(msg);
+            byte[] packet = EncodeTool.EncodePacket(data);
+
+            foreach (var client in UIdClientDict.Values)
+            {
+                if (client == exClient)
+                    continue;
+                client.Send(packet);
+            }
         }
     }
 }

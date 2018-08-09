@@ -1,4 +1,4 @@
-﻿using Protocol.code;
+﻿using Protocol.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +54,9 @@ public class NetManager : ManagerBase
 
     HandlerBase accountHandler = new AccoutHandler();
     HandlerBase userHandler = new UserHandler();
+    HandlerBase matchHandler = new MatchHandler();
+    HandlerBase chatHandler = new ChatHandler();
+    HandlerBase fightHandler = new FightHandler();
 
     private void ReciveSocketMsg(SocketMsg msg)
     {
@@ -64,6 +67,15 @@ public class NetManager : ManagerBase
                 break;
             case OpCode.USER:
                 userHandler.OnReceive(msg.SubCode,msg.Value);
+                break;
+            case OpCode.MATCH:
+                matchHandler.OnReceive(msg.SubCode,msg.Value);
+                break;
+            case OpCode.CHAT:
+                chatHandler.OnReceive(msg.SubCode,msg.Value);
+                break;
+            case OpCode.FIGHT:
+                fightHandler.OnReceive(msg.SubCode,msg.Value);
                 break;
             default:
                 break;

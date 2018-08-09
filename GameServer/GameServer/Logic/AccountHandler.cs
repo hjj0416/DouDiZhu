@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AhpilyServer;
 using GameServer.Cache;
-using Protocol.code;
+using Protocol.Code;
 using Protocol.Dto;
 
 namespace GameServer.Logic
@@ -49,27 +49,27 @@ namespace GameServer.Logic
             {
                 if (accountCache.IsExist(account))
                 {
-                    client.Send(OpCode.ACCOUNT, AccountCode.REGITS_SRES, -1);
+                    client.Send(OpCode.ACCOUNT, AccountCode.REGIST_SRES, -1);
                     Console.WriteLine(string.Format("错误：帐号已经存在"));
                     return;
                 }
 
                 if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
                 {
-                    client.Send(OpCode.ACCOUNT, AccountCode.REGITS_SRES, -2);
+                    client.Send(OpCode.ACCOUNT, AccountCode.REGIST_SRES, -2);
                     Console.WriteLine(string.Format("错误：账号不合法"));
                     return;
                 }
 
                 if (string.IsNullOrEmpty(password) || password.Length < 4 || password.Length > 16)
                 {
-                    client.Send(OpCode.ACCOUNT, AccountCode.REGITS_SRES, -3);
+                    client.Send(OpCode.ACCOUNT, AccountCode.REGIST_SRES, -3);
                     Console.WriteLine(string.Format("错误：密码不合法"));
                     return;
                 }
 
                 accountCache.Create(account, password);
-                client.Send(OpCode.ACCOUNT, AccountCode.REGITS_SRES, 0);
+                client.Send(OpCode.ACCOUNT, AccountCode.REGIST_SRES, 0);
                 Console.WriteLine(string.Format("注册成功"));
             });
             

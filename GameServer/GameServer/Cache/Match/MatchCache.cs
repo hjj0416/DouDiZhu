@@ -1,4 +1,5 @@
-﻿using AhpilyServer.Concurrent;
+﻿using AhpilyServer;
+using AhpilyServer.Concurrent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +34,13 @@ namespace GameServer.Cache.Match
         /// 进入匹配队列
         /// </summary>
         /// <returns></returns>
-        public MatchRoom Enter(int userId)
+        public MatchRoom Enter(int userId,ClientPeer client)
         {
             foreach(MatchRoom mr in idModelDict.Values)
             {
                 if (mr.IsFull())
                     continue;
-                mr.Enter(mr.Id);
+                mr.Enter(userId,client);
                 uidRoomIdDict.Add(userId,mr.Id);
                 return mr;
             }
@@ -50,7 +51,7 @@ namespace GameServer.Cache.Match
             else
                 room = new MatchRoom(id.Add_Get());
 
-            room.Enter(userId);
+            room.Enter(userId,client);
             idModelDict.Add(room.Id,room);
             uidRoomIdDict.Add(userId,room.Id);
             return room;
@@ -104,11 +105,11 @@ namespace GameServer.Cache.Match
         public void Destroy(MatchRoom room)
         {
             idModelDict.Remove(room.Id);
-            foreach(var userId in room.UIdList)
+            foreach(var userId in room.UIdClientDict.Keys)
             {
                 uidRoomIdDict.Remove(userId);
             }
-            room.UIdList.Clear();
+            room.UIdClientDict.Clear();
             room.ReadyUIdList.Clear();
             roomQueue.Enqueue(room);
         }

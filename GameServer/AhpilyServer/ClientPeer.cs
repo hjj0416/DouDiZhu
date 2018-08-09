@@ -114,11 +114,21 @@ namespace AhpilyServer
             SocketMessage msg = new SocketMessage(opCode,subCode,value);
             byte[] data = EncodeTool.EncodeMsg(msg);
             byte[] packet = EncodeTool.EncodePacket(data);
+
+            Send(packet);
+        }
+
+        public void Send(byte[] packet)
+        {
+            //存入消息队列
             sendQueue.Enqueue(packet);
             if (!isSendProcess)
                 Send();
         }
 
+        /// <summary>
+        /// 处理发送的消息
+        /// </summary>
         private void Send()
         {
             isSendProcess = true;
