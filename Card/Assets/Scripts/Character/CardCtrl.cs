@@ -71,8 +71,13 @@ public class CardCtrl : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    public void SelectState()
+    {
+        if(selected==false)
+        {
+            this.selected = true;
+            transform.localPosition += new Vector3(0, 0.3f, 0);
+        }
+
+    }
 }

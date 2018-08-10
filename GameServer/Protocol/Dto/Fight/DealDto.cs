@@ -39,6 +39,8 @@ namespace Protocol.Dto.Fight
         /// </summary>
         public bool IsRegular;
 
+        public List<CardDto> RemainCardList;
+
         public DealDto()
         {
 
@@ -52,6 +54,7 @@ namespace Protocol.Dto.Fight
             this.Weight = CardWeight.GetWeight(cardList, this.Type);
             this.UserId = uid;
             this.IsRegular = (this.Type!=CardType.NONE);
+            this.RemainCardList = new List<CardDto>();
         }
     }
 }

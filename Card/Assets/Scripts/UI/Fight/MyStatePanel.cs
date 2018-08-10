@@ -13,7 +13,6 @@ public class MyStatePanel : StatePanel
         base.Awake();
         Bind(UIEvent.SHOW_GRAB_BUTTON,
             UIEvent.SHOW_DEAL_BUTTON,
-            UIEvent.SET_MY_PLAER_DATA,
             UIEvent.PLAYER_HIDE_READY_BUTTON);
     }
     public override void Execute(int eventCode, object message)
@@ -33,11 +32,6 @@ public class MyStatePanel : StatePanel
                     bool atcive = (bool)message;
                     btnDeal.gameObject.SetActive(atcive);
                     btnNDeal.gameObject.SetActive(atcive);
-                    break;
-                }
-            case UIEvent.SET_MY_PLAER_DATA:
-                {
-                    this.userDto = message as UserDto;
                     break;
                 }
             case UIEvent.PLAYER_HIDE_READY_BUTTON:
@@ -90,6 +84,10 @@ public class MyStatePanel : StatePanel
         btnNDeal.gameObject.SetActive(false);
 
         socketMsg = new SocketMsg();
+
+        //给自己绑定数据
+        UserDto myUserDto = Models.GameModel.MatchRoomDto.UIdUserDict[Models.GameModel.UserDto.Id];
+        this.userDto = myUserDto;
     }
 
     public override void OnDestroy()
@@ -108,25 +106,43 @@ public class MyStatePanel : StatePanel
         btnReady.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 出牌
+    /// </summary>
     private void DealClick()
     {
+        //通知角色模块出牌出牌
+        Dispatch(AreaCode.CHARACTER,CharacterEvent.DEAL_CARD,null);
 
+        btnDeal.gameObject.SetActive(false);
+        btnNDeal.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 不出
+    /// </summary>
     private void NDealClick()
     {
+        //发送不出牌
+        socketMsg.Change(OpCode.FIGHT,FightCode.PASS_CREQ,null);
+        Dispatch(AreaCode.NET,0, socketMsg);
 
+        btnDeal.gameObject.SetActive(false);
+        btnNDeal.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 抢or不抢地主
+    /// </summary>
+    /// <param name="result"></param>
     private void GrabOnclick(bool result)
     {
-        if(result==true)
-        {
-            //抢地主
-        }else
-        {
-            //不抢
-        }
+        //抢地主or不抢
+        socketMsg.Change(OpCode.FIGHT, FightCode.GRAB_LANDLORD_CERQ, result);
+        Dispatch(AreaCode.NET, 0, socketMsg);
+        //点击之后隐藏按钮
+        btnGrab.gameObject.SetActive(false);
+        btnNGrab.gameObject.SetActive(false);
     }
 
     void ReadyClick()

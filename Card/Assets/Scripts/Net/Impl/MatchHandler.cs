@@ -53,8 +53,12 @@ public class MatchHandler : HandlerBase
         //显示为玩家状态面板的准备文字
         Dispatch(AreaCode.UI, UIEvent.PLAYER_READY, readyUserId);
 
-        //发送消息 隐藏准备按钮 防止多次点击 和服务器交互
-        Dispatch(AreaCode.UI, UIEvent.PLAYER_HIDE_READY_BUTTON, null);
+        //自身隐藏
+        if(readyUserId==Models.GameModel.UserDto.Id)
+        {
+            //发送消息 隐藏准备按钮 防止多次点击 和服务器交互
+            Dispatch(AreaCode.UI, UIEvent.PLAYER_HIDE_READY_BUTTON, null);
+        }
     }
 
     /// <summary>
@@ -78,33 +82,9 @@ public class MatchHandler : HandlerBase
     /// <param name="room"></param>
     private void enterResponse(MatchRoomDto matchRoom)
     {
-        //存储本地
-        //GameModel gModel = Models.GameModel;
-        //gModel.MatchRoomDto = matchRoom;
-        //int myUserId = gModel.UserDto.Id;
-        ////重置一下玩家的位置信息
-        //gModel.MatchRoomDto.ResetPosition(myUserId);
-
-        //fix bug
-
-        ////显示现在房间内的玩家
-        //if (matchRoom.LeftId != -1)
-        //{
-        //    UserDto leftUserDto = matchRoom.UIdUserDict[matchRoom.LeftId];
-        //    Dispatch(AreaCode.UI, UIEvent.SET_LEFT_PLAYER_DATA, leftUserDto);
-        //}
-        //if (matchRoom.RightId != -1)
-        //{
-        //    UserDto rightUserDto = matchRoom.UIdUserDict[matchRoom.RightId];
-        //    Dispatch(AreaCode.UI, UIEvent.SET_RIGHT_PLAYER_DATA, rightUserDto);
-        //}
 
         Models.GameModel.MatchRoomDto = matchRoom;
         resetPosition();
-
-        //自身的角色是肯定在的 可以直接的来更新自身的数据
-        int myUserId = Models.GameModel.UserDto.Id;
-        UserDto myUserDto = matchRoom.UIdUserDict[myUserId];
 
         //显示进入房间的按钮
         Dispatch(AreaCode.UI, UIEvent.SHOW_ENTER_ROOM_BUTTON, null);
@@ -136,7 +116,6 @@ public class MatchHandler : HandlerBase
             UserDto rightUserDto = room.UIdUserDict[room.RightId];
             Dispatch(AreaCode.UI, UIEvent.SET_RIGHT_PLAYER_DATA, rightUserDto);
         }
-
         //发消息 显示玩家的状态面板所有游戏物体
         Dispatch(AreaCode.UI, UIEvent.PLAYER_ENTER, newUser.Id);
 

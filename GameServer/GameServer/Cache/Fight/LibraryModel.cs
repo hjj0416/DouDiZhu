@@ -36,7 +36,7 @@ namespace GameServer.Cache.Fight
         {
             cardQueue = new Queue<CardDto>();
             //创建普通的牌
-            for (int color = CardColor.CLUE; color <= CardColor.SQUARE; color++)
+            for (int color = CardColor.CLUB; color <= CardColor.SQUARE; color++)
             {
                 for (int weight = CardWeight.THREE; weight <= CardWeight.TWO; weight++)
                 {

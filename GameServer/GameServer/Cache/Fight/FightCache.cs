@@ -44,7 +44,11 @@ namespace GameServer.Cache.Fight
             FightRoom room = null;
             //先检测是否有可以重用的房间
             if (roomQueue.Count > 0)
+            {
                 room = roomQueue.Dequeue();
+                room.Init(uidList);
+            }
+
             else
                 room = new FightRoom(id.Add_Get(),uidList);
 
@@ -69,6 +73,11 @@ namespace GameServer.Cache.Fight
                 throw new Exception("不存在这个房间");
             }
             return idRoomDict[id];
+        }
+
+        public bool IsFighting(int userId)
+        {
+            return uidRoomIDict.ContainsKey(userId);
         }
 
         /// <summary>
@@ -101,7 +110,7 @@ namespace GameServer.Cache.Fight
             }
             //初始化房间的数据
             room.PlayerList.Clear();
-            room.LeaceUIdList.Clear();
+            room.LeaveUIdList.Clear();
             room.TableCardList.Clear();
             room.libraryModel.Init();
             room.Multiple = 1;

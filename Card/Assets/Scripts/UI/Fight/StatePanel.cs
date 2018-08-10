@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Protocol.Dto;
+using Protocol.Dto.Fight;
 
 public class StatePanel : UIBase
 {
@@ -13,6 +14,7 @@ public class StatePanel : UIBase
         Bind(UIEvent.PLAYER_LEAVE);
         Bind(UIEvent.PLAYER_ENTER);
         Bind(UIEvent.PLAYER_CHAT);
+        Bind(UIEvent.PLAY_CHANGE_IDENTITY);
     }
 
     public override void Execute(int eventCode, object message)
@@ -59,6 +61,15 @@ public class StatePanel : UIBase
                     ChatMsg msg = message as ChatMsg;
                     if (userDto.Id == msg.UserId)
                         showChat(msg.Text);
+                    break;
+                }
+            case UIEvent.PLAY_CHANGE_IDENTITY:
+                {
+                    if (userDto == null)
+                        break;
+                    int userId = (int)message;
+                    if (userDto.Id == userId)
+                        setIdentity(1);
                     break;
                 }
             default:

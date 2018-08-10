@@ -29,14 +29,20 @@ public class LeftStatePanel : StatePanel
     protected override void Start()
     {
         base.Start();
-        if (Models.GameModel.MatchRoomDto.LeftId!=-1)
+
+        MatchRoomDto room = Models.GameModel.MatchRoomDto;
+        int leftId = room.LeftId;
+        if (leftId != -1)
         {
-            this.userDto = Models.GameModel.MatchRoomDto.UIdUserDict[Models.GameModel.MatchRoomDto.LeftId];
+            this.userDto = room.UIdUserDict[leftId];
+            if(room.ReadyUIdList.Contains(leftId))
+            {
+                ReadyState();
+            }
         }
         else
         {
             setPanelActive(false);
-
         }
     }
 }

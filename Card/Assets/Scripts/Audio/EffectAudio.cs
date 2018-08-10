@@ -31,7 +31,7 @@ public class EffectAudio : AudioBase {
 
     private void PlayEffectAudio(string assetName)
     {
-        AudioClip ac = Resources.Load<AudioClip>("Sound/Chat/"+assetName);
+        AudioClip ac = Resources.Load<AudioClip>("Sound/"+assetName);
         audioSource.clip=ac;
         audioSource.Play();
     }

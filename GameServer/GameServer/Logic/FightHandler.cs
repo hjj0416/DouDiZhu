@@ -41,6 +41,10 @@ namespace GameServer.Logic
             }
         }
 
+        /// <summary>
+        /// 用户离开
+        /// </summary>
+        /// <param name="client"></param>
         private void leave(ClientPeer client)
         {
             SingleExecute.Instance.Execute(() =>
@@ -48,18 +52,22 @@ namespace GameServer.Logic
                 if (!userCache.IsOnline(client))
                     return;
                 int userId = userCache.GetId(client);
+                if(fightCache.IsFighting(userId)==false)
+                {
+                    return;
+                }
                 FightRoom fightRoom = fightCache.GetRoomByUId(userId);
 
                 //中途退出
-                fightRoom.LeaceUIdList.Add(userId);
+                fightRoom.LeaveUIdList.Add(userId);
                 Brocast(fightRoom,OpCode.FIGHT,FightCode.LEAVE_BRO,userId);
 
-                if(fightRoom.LeaceUIdList.Count==3)
+                if(fightRoom.LeaveUIdList.Count==3)
                 {
                     //给逃跑玩家添加逃跑场次
-                    for (int i = 0; i < fightRoom.LeaceUIdList.Count; i++)
+                    for (int i = 0; i < fightRoom.LeaveUIdList.Count; i++)
                     {
-                        UserModel um = userCache.GetModelById(fightRoom.LeaceUIdList[i]);
+                        UserModel um = userCache.GetModelById(fightRoom.LeaveUIdList[i]);
                         um.RunCount++;
                         um.Been -= fightRoom.Multiple*1000 * 3;
                         um.Exp += 0;
@@ -81,13 +89,17 @@ namespace GameServer.Logic
                 if (!userCache.IsOnline(client))
                     return;
                 int userId = userCache.GetId(client);
+                if(userId!=dto.UserId)
+                {
+                    return;
+                }
                 FightRoom fightRoom = fightCache.GetRoomByUId(userId);
 
                 //玩家如果掉线退出
-                if(fightRoom.LeaceUIdList.Contains(userId))
+                if(fightRoom.LeaveUIdList.Contains(userId))
                 {
                     //直接跳过
-                    //TODO
+                    Turn(fightRoom);
                 }
                 bool canDel= fightRoom.DeadCard(dto.Type, dto.Weight, dto.Length, dto.UserId, dto.selectCardList);
                 if(canDel==false)
@@ -100,10 +112,11 @@ namespace GameServer.Logic
                 {
                     //给自身客户端发送出牌成功的消息
                     client.Send(OpCode.FIGHT,FightCode.DEAL_SERS,0);
-                    //广播给所有客户端
-                    Brocast(fightRoom,OpCode.FIGHT,FightCode.DEAL_BRO,dto);
                     //检查一下剩余手牌数
-                    List<CardDto> remainCard= fightRoom.GetPlayerModel(userId).CardList;
+                    List<CardDto> remainCard = fightRoom.GetPlayerModel(userId).CardList;
+                    //广播给所有客户端
+                    dto.RemainCardList = remainCard;
+                    Brocast(fightRoom,OpCode.FIGHT,FightCode.DEAL_BRO,dto);
                     if(remainCard.Count==0)
                     {
                         //游戏结束
@@ -174,9 +187,9 @@ namespace GameServer.Logic
                 userCache.Update(um);
             }
             //给逃跑玩家添加逃跑场次
-            for (int i = 0; i < room.LeaceUIdList.Count; i++)
+            for (int i = 0; i < room.LeaveUIdList.Count; i++)
             {
-                UserModel um = userCache.GetModelById(room.LeaceUIdList[i]);
+                UserModel um = userCache.GetModelById(room.LeaveUIdList[i]);
                 um.RunCount++;
                 um.Been -= winBeen * 3;
                 um.Exp += 0;
@@ -211,8 +224,9 @@ namespace GameServer.Logic
             else
             {
                 //玩家不掉线就给他发消息让他出牌
-                ClientPeer nextClient = userCache.GetClientPeer(nextUId);
-                nextClient.Send(OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
+                //ClientPeer nextClient = userCache.GetClientPeer(nextUId);
+                //nextClient.Send(OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
+                Brocast(room,OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
             }
         }
 
@@ -235,14 +249,17 @@ namespace GameServer.Logic
                     //抢
                     fightRoom.SetLandlord(userId);
                     //给每个客户端发送消息谁当了地主
-                    GrabDto dto = new GrabDto(userId, fightRoom.TableCardList);
+                    GrabDto dto = new GrabDto(userId, fightRoom.TableCardList,fightRoom.getUserCards(userId));
                     Brocast(fightRoom,OpCode.FIGHT,FightCode.GRAB_LANDLORD_BRQ,dto);
+
+                    Brocast(fightRoom, OpCode.FIGHT, FightCode.TURN_DEAL_BRO, userId);
                 }
                 else
                 {
                     //不抢
                     int nextUId = fightRoom.GetNextUId(userId);
-                    Brocast(fightRoom,OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
+                    Brocast(fightRoom,OpCode.FIGHT,FightCode.TURN_GRAB_BRO,nextUId);
+
                 }
             });
         }
@@ -268,7 +285,7 @@ namespace GameServer.Logic
 
                 //开始抢地主
                 int firstUserId = room.GetFirstUId();
-                Brocast(room, OpCode.FIGHT, FightCode.GRAB_LANDLORD_BRQ, firstUserId, null);
+                Brocast(room, OpCode.FIGHT, FightCode.TURN_GRAB_BRO, firstUserId, null);
             });
         }
 
@@ -287,10 +304,13 @@ namespace GameServer.Logic
 
             foreach (var player in room.PlayerList)
             {
-                ClientPeer client = userCache.GetClientPeer(player.UserId);
-                if (client == exClient)
-                    continue;
-                client.Send(packet);
+                if(userCache.IsOnline(player.UserId))
+                {
+                    ClientPeer client = userCache.GetClientPeer(player.UserId);
+                    if (client == exClient)
+                        continue;
+                    client.Send(packet);
+                }
             }
         }
     }

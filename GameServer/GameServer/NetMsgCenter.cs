@@ -49,7 +49,7 @@ namespace GameServer
                     chat.OnRecive(client,msg.SubCode,msg.Value);
                     break;
                 case OpCode.FIGHT:
-                    chat.OnRecive(client,msg.SubCode,msg.Value);
+                    fight.OnRecive(client,msg.SubCode,msg.Value);
                     break;
                 default:
                     break;

@@ -67,7 +67,12 @@
     <Compile Include="Assets\Scripts\Audio\EffectAudio.cs" />
     <Compile Include="Assets\Scripts\Character\CardCtrl.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterBase.cs" />
+    <Compile Include="Assets\Scripts\Character\CharacterEvent.cs" />
     <Compile Include="Assets\Scripts\Character\CharacterManager.cs" />
+    <Compile Include="Assets\Scripts\Character\DeskCtrl.cs" />
+    <Compile Include="Assets\Scripts\Character\LeftPlayerCtrl.cs" />
+    <Compile Include="Assets\Scripts\Character\MyPlayerCtrl.cs" />
+    <Compile Include="Assets\Scripts\Character\RightPlayerCtrl.cs" />
     <Compile Include="Assets\Scripts\Framework\AreaCode.cs" />
     <Compile Include="Assets\Scripts\Framework\ManagerBase.cs" />
     <Compile Include="Assets\Scripts\Framework\MonoBase.cs" />

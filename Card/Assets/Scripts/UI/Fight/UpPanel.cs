@@ -11,7 +11,7 @@ public class UpPanel : UIBase {
         switch (eventCode)
         {
             case UIEvent.SET_TABLE_CARD:
-                SetTableCards(message as CardDto[]);
+                SetTableCards(message as List<CardDto>);
                 break;
             default:
                 break;
@@ -32,11 +32,10 @@ public class UpPanel : UIBase {
     /// 卡牌的数据类
     /// </summary>
     /// <param name="cards"></param>
-    private void SetTableCards(CardDto[] cards)
+    private void SetTableCards(List<CardDto> cards)
     {
-        //TODO
         imgCards[0].sprite = Resources.Load<Sprite>("Poker/"+cards[0].Name);
-        imgCards[0].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
-        imgCards[0].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
+        imgCards[1].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
+        imgCards[2].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
     }
 }

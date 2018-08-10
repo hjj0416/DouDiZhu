@@ -27,9 +27,15 @@ public class RightStatePanel : StatePanel {
     protected override void Start()
     {
         base.Start();
-        if (Models.GameModel.MatchRoomDto.RightId != -1)
+        MatchRoomDto room = Models.GameModel.MatchRoomDto;
+        int rightId = room.RightId;
+        if (rightId != -1)
         {
-            this.userDto = Models.GameModel.MatchRoomDto.UIdUserDict[Models.GameModel.MatchRoomDto.RightId];
+            this.userDto = room.UIdUserDict[rightId];
+            if (room.ReadyUIdList.Contains(rightId))
+            {
+                ReadyState();
+            }
         }
         else
         {

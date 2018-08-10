@@ -23,7 +23,7 @@ namespace GameServer.Cache.Fight
         /// <summary>
         /// 中途离开用户列表
         /// </summary>
-        public List<int> LeaceUIdList { get; private set; }
+        public List<int> LeaveUIdList { get; private set; }
 
         /// <summary>
         /// 牌库
@@ -55,15 +55,25 @@ namespace GameServer.Cache.Fight
                 PlayerDto player = new PlayerDto(uid);
                 this.PlayerList.Add(player);
             }
-            this.LeaceUIdList = new List<int>();
+            this.LeaveUIdList = new List<int>();
             this.libraryModel = new LibraryModel();
             this.TableCardList = new List<CardDto>();
             this.Multiple = 1;
             this.roundModel = new RoundModel();
         }
+
+        public void Init(List<int> uidList)
+        {
+            foreach (int uid in uidList)
+            {
+                PlayerDto player = new PlayerDto(uid);
+                this.PlayerList.Add(player);
+            }
+        }
+
         public bool IsOffline(int uid)
         {
-            return LeaceUIdList.Contains(uid);
+            return LeaveUIdList.Contains(uid);
         }
 
 
@@ -135,7 +145,12 @@ namespace GameServer.Cache.Fight
             else if(type==CardType.JOKER_BOOM)
             {
                 canDeal = true;
+            }else if(userId==roundModel.BiggestUId)
+            {
+                canDeal = true;
             }
+
+
             //出牌
             if(canDeal)
             {
@@ -165,15 +180,22 @@ namespace GameServer.Cache.Fight
         {
             //获取玩家现有手牌
             List<CardDto> currList = getUserCards(userId);
-            for (int i = currList.Count; i >=0; i--)
+
+            List<CardDto> list = new List<CardDto>();
+            foreach (var select in cardList)
             {
-                foreach (CardDto temp in cardList)
+                for(int i= currList.Count-1;i>=0;i--)
                 {
-                    if(currList[i].Name==temp.Name)
+                    if(currList[i].Name==select.Name)
                     {
-                        currList.RemoveAt(i);
+                        list.Add(currList[i]);
+                        break;
                     }
                 }
+            }
+            foreach (var card in list)
+            {
+                currList.Remove(card);
             }
         }
 
@@ -235,6 +257,8 @@ namespace GameServer.Cache.Fight
                     {
                         player.Add(TableCardList[i]);
                     }
+                    //重新排序
+                    this.Sort();
                     //开始回合
                     roundModel.Start(userId);
                 }

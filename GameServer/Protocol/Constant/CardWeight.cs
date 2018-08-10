@@ -77,7 +77,7 @@ namespace Protocol.Constant
             int totalWeight = 0;
             if(cardType==CardType.THREE_ONE||cardType ==CardType.THREE_TWO)
             {
-                for (int i = 0; i < cardList.Count; i++)
+                for (int i = 0; i < cardList.Count-2; i++)
                 {
                     if(cardList[i].Weight==cardList[i+1].Weight&&cardList[i].Weight==cardList[i+2].Weight)
                     {

@@ -26,7 +26,7 @@ public class ChatHandler : HandlerBase
                     //显示文字
                     Dispatch(AreaCode.UI,UIEvent.PLAYER_CHAT,msg);
                     //播放声音
-                    Dispatch(AreaCode.AUDIO,AudioEvent.PLAY_EFFECT_AUDIO,"Chat_"+chatType);
+                    Dispatch(AreaCode.AUDIO,AudioEvent.PLAY_EFFECT_AUDIO,"Chat/Chat_"+chatType);
                     break;
                 }
             default:
