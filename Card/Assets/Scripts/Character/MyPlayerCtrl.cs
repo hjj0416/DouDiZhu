@@ -106,7 +106,7 @@ public class MyPlayerCtrl : CharacterBase
         for (int i = index; i < cardCtrlList.Count; i++)
         {
             cardCtrlList[i].selected = false;
-            Destroy(cardCtrlList[i].gameObject);
+            cardCtrlList[i].gameObject.SetActive(false);
         }
     }
 

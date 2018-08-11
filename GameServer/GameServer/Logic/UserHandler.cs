@@ -93,7 +93,8 @@ namespace GameServer.Logic
                     return;
                 }
                 //上线角色
-                Online(client);
+                if(userCache.IsOnline(client)==false)
+                    Online(client);
                 UserModel model = userCache.GetModelByAccountId(accountId);
                 UserDto dto = new UserDto(model.Id,model.Name,model.Been,model.WinCount,model.LoseCount,model.RunCount,model.Lv,model.Exp);
                 client.Send(OpCode.USER, UserCode.GET_INFO_SRES, dto);

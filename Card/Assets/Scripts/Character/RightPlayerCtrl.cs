@@ -93,7 +93,7 @@ public class RightPlayerCtrl : CharacterBase
     private void createGo(int index, GameObject cardPrefab)
     {
         GameObject cardGo = Instantiate(cardPrefab, cardParent) as GameObject;
-        cardGo.transform.localPosition = new Vector2((-0.15f * index), 0);
+        cardGo.transform.localPosition = new Vector2((0.15f * index), 0);
         cardGo.GetComponent<SpriteRenderer>().sortingOrder = index;
         cardObjectList.Add(cardGo);
     }

@@ -76,12 +76,11 @@ public class InfoPanel : UIBase {
     /// </summary>
     private void RefreshPanel(string name,int lv,int exp,int been)
     {
-        //TODO
         txtName.text = name;
         txtLv.text = string.Format("LV.{0}",lv);
         //等级和经验之间的公式exp=lv*100
         txtExp.text = string.Format("{0}/{1}",exp,lv*100);
-        sldExp.value = (float)exp / lv * 100;
+        sldExp.value = (float)exp / (lv * 100);
         txtBeen.text = string.Format("x{0}",been);
     }
 }

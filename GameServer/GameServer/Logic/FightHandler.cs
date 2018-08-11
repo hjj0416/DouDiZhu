@@ -14,7 +14,7 @@ namespace GameServer.Logic
 {
     public class FightHandler : IHandler
     {
-        public FightCache fightCache = Caches.fight;
+        public FightCache fightCache = Caches.Fight;
         public UserCache userCache = Caches.User;
 
         public void OnDisconnect(ClientPeer client)
@@ -174,6 +174,12 @@ namespace GameServer.Logic
                 um.WinCount++;
                 um.Been = winBeen;
                 um.Exp += 100;
+                int maxExp = um.Lv * 100;
+                while(maxExp<=um.Exp)
+                {
+                    um.Lv++;
+                    um.Exp -= maxExp;
+                }
                 userCache.Update(um);
             }
             //给失败的玩家添加负场
@@ -184,6 +190,12 @@ namespace GameServer.Logic
                 um.LoseCount++;
                 um.Been -= winBeen;
                 um.Exp += 10;
+                int maxExp = um.Lv * 100;
+                while (maxExp <= um.Exp)
+                {
+                    um.Lv++;
+                    um.Exp -= maxExp;
+                }
                 userCache.Update(um);
             }
             //给逃跑玩家添加逃跑场次
@@ -213,19 +225,17 @@ namespace GameServer.Logic
         private void Turn(FightRoom room)
         {
             int nextUId = room.Turn();
+            room.roundModel.BiggestUId = nextUId;
             //如果下一个玩家掉线
             if(room.IsOffline(nextUId))
             {
                 //下一个也掉线了 递归
                 Turn(room);
-                //TODO 
-                //掉线人物AI
+                //TODO 掉线人物AI
             }
             else
             {
                 //玩家不掉线就给他发消息让他出牌
-                //ClientPeer nextClient = userCache.GetClientPeer(nextUId);
-                //nextClient.Send(OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
                 Brocast(room,OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
             }
         }

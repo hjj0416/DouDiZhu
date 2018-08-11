@@ -138,14 +138,14 @@ namespace GameServer.Cache.Fight
                 }
 
             }
-            else if(type==CardType.BOOM&&roundModel.LastCardType!=CardType.BOOM)
+            else if(type==CardType.BOOM&&roundModel.LastCardType!=CardType.BOOM)//上一个不是炸弹，出炸弹，可以出牌
             {
                 canDeal = true;
             }
-            else if(type==CardType.JOKER_BOOM)
+            else if(type==CardType.JOKER_BOOM)//出王炸也可以出牌
             {
                 canDeal = true;
-            }else if(userId==roundModel.BiggestUId)
+            }else if(userId==roundModel.BiggestUId)//当前id是当前回合最大出牌者
             {
                 canDeal = true;
             }

@@ -127,8 +127,8 @@ public class MyStatePanel : StatePanel
         socketMsg.Change(OpCode.FIGHT,FightCode.PASS_CREQ,null);
         Dispatch(AreaCode.NET,0, socketMsg);
 
-        btnDeal.gameObject.SetActive(false);
-        btnNDeal.gameObject.SetActive(false);
+        //btnDeal.gameObject.SetActive(false);
+        //btnNDeal.gameObject.SetActive(false);
     }
 
     /// <summary>

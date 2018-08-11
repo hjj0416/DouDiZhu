@@ -29,8 +29,70 @@ public class FightHandler : HandlerBase
             case FightCode.DEAL_SERS:
                 dealResponse((int)value);
                 break;
+            case FightCode.OVER_BRO:
+                overBro(value as OverDto);
+                break;
+            case FightCode.PASS_SRES:
+                nDealResponse((int)value);
+                break;
+            case FightCode.LEAVE_BRO:
+                leaveBro((int)value);
+                break;
             default:
                 break;
+        }
+    }
+
+    PromptMsg promptMsg = new PromptMsg();
+
+    /// <summary>
+    /// 离开的广播处理
+    /// </summary>
+    /// <param name="leaveUserId"></param>
+    private void leaveBro(int leaveUserId)
+    {
+        //发消息 隐藏玩家的状态面板所有游戏物体
+        Dispatch(AreaCode.UI, UIEvent.PLAYER_LEAVE, leaveUserId);
+
+    }
+
+    /// <summary>
+    /// 结束广播
+    /// </summary>
+    /// <param name="overDto"></param>
+    private void overBro(OverDto overDto)
+    {
+        if(overDto.WinUIdList.Contains(Models.GameModel.Id))
+        {
+            Dispatch(AreaCode.AUDIO, AudioEvent.PLAY_EFFECT_AUDIO, "Fight/MusicEx_win");
+        }
+        else
+        {
+            Dispatch(AreaCode.AUDIO, AudioEvent.PLAY_EFFECT_AUDIO, "Fight/MusicEx_Lose");
+        }
+
+        Dispatch(AreaCode.UI,UIEvent.SHOW_OVER_PANEL,overDto);
+    }
+
+    /// <summary>
+    /// 服务器发回不出的响应
+    /// </summary>
+    /// <param name="result"></param>
+    private void nDealResponse(int result)
+    {
+        //玩家可以不出牌，隐藏按钮
+        if (result == 0)
+        {
+            Dispatch(AreaCode.UI,UIEvent.SHOW_DEAL_BUTTON,false);
+            //播放音效
+            Dispatch(AreaCode.AUDIO, AudioEvent.PLAY_EFFECT_AUDIO, "Fight/Woman_buyao1");
+        }
+        else if(result==-1)//玩家是最大出牌者，不可以不出牌
+        {
+            //提示必须出牌
+            Dispatch(AreaCode.UI, UIEvent.SHOW_DEAL_BUTTON, true);
+            promptMsg.Change("你的出牌回合必须出牌", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
         }
     }
 
@@ -44,7 +106,7 @@ public class FightHandler : HandlerBase
         if (result==-1)
         {
             //玩家出的牌管不上上一个玩家出的牌
-            PromptMsg promptMsg = new PromptMsg("玩家出的牌管不上上一个玩家出的牌",Color.red);
+            promptMsg.Change("玩家出的牌管不上上一个玩家出的牌",Color.red);
             Dispatch(AreaCode.UI,UIEvent.PROMPT_MSG,promptMsg);
             //重新显示出牌按钮
             Dispatch(AreaCode.UI,UIEvent.SHOW_DEAL_BUTTON,true);

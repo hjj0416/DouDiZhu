@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AhpilyServer;
 using GameServer.Cache;
+using GameServer.Cache.Fight;
 using GameServer.Cache.Match;
 using Protocol.Code;
 using Protocol.Constant;
@@ -16,6 +17,7 @@ namespace GameServer.Logic
     {
         private UserCache userCache = Caches.User;
         private MatchCache matchCache = Caches.Match;
+        private FightCache fightCache = Caches.Fight;
 
         public void OnDisconnect(ClientPeer client)
         {
@@ -40,7 +42,7 @@ namespace GameServer.Logic
                 return;
             int userId = userCache.GetId(client);
             ChatDto chatDto = new ChatDto(userId,chatType);
-            if(matchCache.IsMatching(userId))
+            if(matchCache.IsMatching(userId)||fightCache.IsFighting(userId))
             {
                 MatchRoom mRoom = matchCache.GetRoom(userId);
                 mRoom.Brocast(OpCode.CHAT,ChatCode.SERS, chatDto);

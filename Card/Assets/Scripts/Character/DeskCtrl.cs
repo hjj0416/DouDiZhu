@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeskCtrl : UIBase {
-
+public class DeskCtrl : CharacterBase
+{
     private void Awake()
     {
         Bind(CharacterEvent.UPDATE_SHOW_DESK);
@@ -15,21 +15,15 @@ public class DeskCtrl : UIBase {
         switch (eventCode)
         {
             case CharacterEvent.UPDATE_SHOW_DESK:
-                UpdateShowDesk(message as List<CardDto>);
+                updateShowDesk(message as List<CardDto>);
                 break;
             default:
                 break;
         }
     }
 
-    /// <summary>
-    /// 自身的卡牌列表
-    /// </summary>
-    private List<CardCtrl> cardCtrlList;
 
-    /// <summary>
-    /// 卡牌的父物体
-    /// </summary>
+    private List<CardCtrl> cardCtrlList;
     private Transform cardParent;
 
     // Use this for initialization
@@ -39,13 +33,18 @@ public class DeskCtrl : UIBase {
         cardCtrlList = new List<CardCtrl>();
     }
 
-    //更新显示桌面的牌
-    private void UpdateShowDesk(List<CardDto> cardList)
+    /// <summary>
+    /// 更新显示桌面的牌
+    /// </summary>
+    /// <param name="cardList"></param>
+    private void updateShowDesk(List<CardDto> cardList)
     {
-        if(cardCtrlList.Count>cardCtrlList.Count)
+        //33 34567
+        //34567  3
+
+        if (cardCtrlList.Count > cardList.Count)
         {
             //原来比现在多
-            //复用之前创建的卡牌
             int index = 0;
             foreach (var cardCtrl in cardCtrlList)
             {
@@ -53,7 +52,7 @@ public class DeskCtrl : UIBase {
                 cardCtrl.Init(cardList[index], index, true);
                 index++;
                 //如果牌没了
-                if(index==cardList.Count)
+                if (index == cardList.Count)
                 {
                     break;
                 }
@@ -66,7 +65,6 @@ public class DeskCtrl : UIBase {
         else
         {
             //原来比现在少
-            //复用之前创建的卡牌
             int index = 0;
             foreach (var cardCtrl in cardCtrlList)
             {
@@ -74,7 +72,7 @@ public class DeskCtrl : UIBase {
                 cardCtrl.Init(cardList[index], index, true);
                 index++;
             }
-            //在创建新的三张牌
+            //再创建新的n张卡牌
             GameObject cardPrefab = Resources.Load<GameObject>("Card/MyCard");
             for (int i = index; i < cardList.Count; i++)
             {
@@ -83,6 +81,7 @@ public class DeskCtrl : UIBase {
         }
     }
 
+
     /// <summary>
     /// 创建卡牌游戏物体
     /// </summary>
@@ -90,12 +89,14 @@ public class DeskCtrl : UIBase {
     /// <param name="index"></param>
     private void createGo(CardDto card, int index, GameObject cardPrefab)
     {
-        GameObject cardGo = Instantiate(cardPrefab, cardParent) as GameObject;
+        GameObject cardGo = Object.Instantiate(cardPrefab, cardParent) as GameObject;
         cardGo.name = card.Name;
-        cardGo.transform.localPosition = new Vector2((0.25f * index), 0);
+        cardGo.transform.localPosition = new Vector2((0.3f * index), 0);
         CardCtrl cardCtrl = cardGo.GetComponent<CardCtrl>();
         cardCtrl.Init(card, index, true);
 
+        //存储本地
         this.cardCtrlList.Add(cardCtrl);
     }
+
 }

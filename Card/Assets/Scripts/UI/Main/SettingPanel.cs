@@ -73,7 +73,13 @@ public class SettingPanel : UIBase {
     void TogAudio_onValueChanged(bool value)
     {
         //操作声音
-        //TODO
+        if(value==true)
+        {
+            Dispatch(AreaCode.AUDIO,AudioEvent.PLAY_BG_AUDIO,null);
+        }else
+        {
+            Dispatch(AreaCode.AUDIO, AudioEvent.STOP_BG_AUDIO, null);
+        }
     }
 
     /// <summary>
@@ -82,6 +88,6 @@ public class SettingPanel : UIBase {
     /// <param name="value"></param>
     void SldVolume_onValueChanged(float value)
     {
-
+        Dispatch(AreaCode.AUDIO,AudioEvent.PLAY_BG_VOLUME,value);
     }
 }
