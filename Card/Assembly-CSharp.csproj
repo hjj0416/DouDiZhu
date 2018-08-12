@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Framework\AreaCode.cs" />
     <Compile Include="Assets\Scripts\Framework\ManagerBase.cs" />
     <Compile Include="Assets\Scripts\Framework\MonoBase.cs" />
+    <Compile Include="Assets\Scripts\Framework\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\Framework\MsgCenter.cs" />
     <Compile Include="Assets\Scripts\Model\GameModel.cs" />
     <Compile Include="Assets\Scripts\Model\Models.cs" />
@@ -91,8 +92,11 @@
     <Compile Include="Assets\Scripts\Net\Msg\NetSendMsg.cs" />
     <Compile Include="Assets\Scripts\Net\NetManager.cs" />
     <Compile Include="Assets\Scripts\Net\SocketMsg.cs" />
+    <Compile Include="Assets\Scripts\Scene\LoginScene.cs" />
+    <Compile Include="Assets\Scripts\Scene\MainScene.cs" />
     <Compile Include="Assets\Scripts\Scene\Msg\LoadSceneMsg.cs" />
     <Compile Include="Assets\Scripts\Scene\SceneEvent.cs" />
+    <Compile Include="Assets\Scripts\Scene\SceneID.cs" />
     <Compile Include="Assets\Scripts\Scene\SceneMgr.cs" />
     <Compile Include="Assets\Scripts\UI\Fight\ButtonPanel.cs" />
     <Compile Include="Assets\Scripts\UI\Fight\LeftStatePanel.cs" />
@@ -114,6 +118,8 @@
     <Compile Include="Assets\Scripts\UI\UIBase.cs" />
     <Compile Include="Assets\Scripts\UI\UIEvent.cs" />
     <Compile Include="Assets\Scripts\UI\UIManager.cs" />
+    <Compile Include="Assets\Scripts\UI\UIMgr.cs" />
+    <Compile Include="Assets\Test.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Unity/DouDiZhu/Card/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

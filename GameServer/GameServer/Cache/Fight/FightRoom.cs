@@ -1,4 +1,5 @@
-﻿using Protocol.Constant;
+﻿using AhpilyServer;
+using Protocol.Constant;
 using Protocol.Dto.Fight;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,11 @@ namespace GameServer.Cache.Fight
         /// 唯一标识
         /// </summary>
         public int Id { get; private set; }
+
+        /// <summary>
+        /// 战斗中的的用户id 对应的连接对象
+        /// </summary>
+        public Dictionary<int, ClientPeer> UIdClientDict { get; private set; }
 
         /// <summary>
         /// 存储所有玩家
@@ -60,6 +66,15 @@ namespace GameServer.Cache.Fight
             this.TableCardList = new List<CardDto>();
             this.Multiple = 1;
             this.roundModel = new RoundModel();
+            this.UIdClientDict= new Dictionary<int, ClientPeer>();
+        }
+
+        /// <summary>
+        /// 开始战斗
+        /// </summary>
+        public void StartFight(int userId,ClientPeer client)
+        {
+            UIdClientDict.Add(userId, client);
         }
 
         public void Init(List<int> uidList)
@@ -75,7 +90,6 @@ namespace GameServer.Cache.Fight
         {
             return LeaveUIdList.Contains(uid);
         }
-
 
         /// <summary>
         /// 转换出牌
@@ -358,6 +372,26 @@ namespace GameServer.Cache.Fight
             sortCard(PlayerList[0].CardList,asc);
             sortCard(PlayerList[1].CardList, asc);
             sortCard(PlayerList[2].CardList, asc);
+        }
+
+        /// <summary>
+        /// 广播房间内所有玩家的信息
+        /// </summary>
+        /// <param name="opCode"></param>
+        /// <param name="subCode"></param>
+        /// <param name="value"></param>
+        public void Brocast(int opCode, int subCode, object value, ClientPeer exClient = null)
+        {
+            SocketMessage msg = new SocketMessage(opCode, subCode, value);
+            byte[] data = EncodeTool.EncodeMsg(msg);
+            byte[] packet = EncodeTool.EncodePacket(data);
+
+            foreach (var client in UIdClientDict.Values)
+            {
+                if (client == exClient)
+                    continue;
+                client.Send(packet);
+            }
         }
     }
 }

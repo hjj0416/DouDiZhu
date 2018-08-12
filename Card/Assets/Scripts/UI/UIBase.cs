@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UIBase : MonoBase
 {
+    public int sceneID;
+
     /// <summary>
     /// 自身关心的消息集合
     /// </summary>
@@ -54,7 +56,8 @@ public class UIBase : MonoBase
     /// <param name="active"></param>
     protected void setPanelActive(bool active)
     {
-        gameObject.SetActive(active);
+        if(gameObject.activeSelf!=active)
+            gameObject.SetActive(active);
     }
 
 }

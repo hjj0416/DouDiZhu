@@ -96,6 +96,37 @@ namespace Protocol.Constant
 
             return true;
         }
+        
+        /// <summary>
+        /// 是否是飞机
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
+        //public static bool IsTripleStraight(List<CardDto> cards)
+        //{
+        //    //333 444 555
+        //    // 33344456  333444 66 77
+        //    if (cards.Count < 6 || cards.Count % 3 != 0)
+        //        return false;
+
+        //    for (int i = 0; i < cards.Count - 3; i += 3)
+        //    {
+        //        if (cards[i].Weight != cards[i + 1].Weight)
+        //            return false;
+        //        if (cards[i + 2].Weight != cards[i + 1].Weight)
+        //            return false;
+        //        if (cards[i].Weight != cards[i + 2].Weight)
+        //            return false;
+
+        //        if (cards[i + 3].Weight - cards[i].Weight != 1)
+        //            return false;
+        //        //不能超过A
+        //        if (cards[i].Weight > CardWeight.ONE || cards[i + 3].Weight > CardWeight.ONE)
+        //            return false;
+        //    }
+
+        //    return true;
+        //}
 
         /// <summary>
         /// 是否是飞机
@@ -106,23 +137,55 @@ namespace Protocol.Constant
         {
             //333 444 555
             // 33344456  333444 66 77
-            if (cards.Count < 6 || cards.Count % 3 != 0)
+            // 默认不是单
+            if (cards == null) return false;
+
+            int size = cards.Count;
+            if (size < 6) return false;
+
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < size; i++)
+            {
+                int card = cards[i].Weight;
+                if (dic.ContainsKey(card))
+                {
+                    dic[card]++;
+                }
+                else
+                {
+                    dic.Add(card, 1);
+                }
+            }
+
+            int tripleCount = 0;
+            List<int> removeList = new List<int>();
+            foreach (var kv in dic)
+            {
+                if (kv.Value == 3)
+                {
+                    tripleCount++;
+                    removeList.Add(kv.Key);
+                }
+            }
+            //remove
+            for (int i = 0, len = removeList.Count; i < len; i++)
+            {
+                dic.Remove(removeList[i]);
+            }
+
+            if (dic.Count == 0 || (size - tripleCount * 3) == tripleCount)
+                return true;
+
+            //判断是否有对子
+            if ((size - tripleCount * 3) != 2 * tripleCount)
                 return false;
 
-            for (int i = 0; i < cards.Count - 3; i += 3)
+            foreach (var kv in dic)
             {
-                if (cards[i].Weight != cards[i + 1].Weight)
+                if (kv.Value != 2)
+                {
                     return false;
-                if (cards[i + 2].Weight != cards[i + 1].Weight)
-                    return false;
-                if (cards[i].Weight != cards[i + 2].Weight)
-                    return false;
-
-                if (cards[i + 3].Weight - cards[i].Weight != 1)
-                    return false;
-                //不能超过A
-                if (cards[i].Weight > CardWeight.ONE || cards[i + 3].Weight > CardWeight.ONE)
-                    return false;
+                }
             }
 
             return true;

@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class UpPanel : UIBase {
 
+    private void Awake()
+    {
+        Bind(UIEvent.SET_TABLE_CARD);
+    }
+
     public override void Execute(int eventCode, object message)
     {
         switch (eventCode)
@@ -35,7 +40,7 @@ public class UpPanel : UIBase {
     private void SetTableCards(List<CardDto> cards)
     {
         imgCards[0].sprite = Resources.Load<Sprite>("Poker/"+cards[0].Name);
-        imgCards[1].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
-        imgCards[2].sprite = Resources.Load<Sprite>("Poker/" + cards[0].Name);
+        imgCards[1].sprite = Resources.Load<Sprite>("Poker/" + cards[1].Name);
+        imgCards[2].sprite = Resources.Load<Sprite>("Poker/" + cards[2].Name);
     }
 }

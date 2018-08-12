@@ -63,6 +63,12 @@ namespace GameServer.Logic
                     Console.WriteLine("创建角色---重复创建");
                     return;
                 }
+                if(userCache.isRepeatName(name))
+                {
+                    client.Send(OpCode.USER, UserCode.CREATE_SRES, -3);//已被使用
+                    Console.WriteLine("创建角色---名字已被使用");
+                    return;
+                }
                 userCache.Create(name, accountId);
                 client.Send(OpCode.USER, UserCode.CREATE_SRES, -0);//创建成功
                 Console.WriteLine("创建角色---创建成功");

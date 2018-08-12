@@ -42,15 +42,17 @@ namespace GameServer.Logic
                 return;
             int userId = userCache.GetId(client);
             ChatDto chatDto = new ChatDto(userId,chatType);
-            if(matchCache.IsMatching(userId)||fightCache.IsFighting(userId))
+            if(matchCache.IsMatching(userId))
             {
                 MatchRoom mRoom = matchCache.GetRoom(userId);
                 mRoom.Brocast(OpCode.CHAT,ChatCode.SERS, chatDto);
-                Console.WriteLine("快捷喊话："+chatDto);
+                Console.WriteLine("快捷喊话："+chatDto.ChatType);
             }
-            else if(false)
+            else if(fightCache.IsFighting(userId))
             {
-                //检测战斗房间
+                FightRoom fightRoom = fightCache.GetRoomByUId(userId);
+                fightRoom.Brocast(OpCode.CHAT,ChatCode.SERS,chatDto);
+                Console.WriteLine("快捷喊话：" + chatDto.ChatType);
             }
         }
     }

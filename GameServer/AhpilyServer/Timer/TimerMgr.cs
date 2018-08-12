@@ -78,6 +78,21 @@ namespace AhpilyServer.Timers
             TimeModel model = new TimeModel(id.Add_Get(),DateTime.Now.Ticks+delayTime,timeDelegate);
             idModelDict.TryAdd(model.Id,model);
         }
+
+        //移除任务
+        public void RemoveEvent(TimeDelegate timeDelegate)
+        {
+            foreach (TimeModel td in idModelDict.Values)
+            {
+                if (td.timeDelegate == timeDelegate)
+                {
+                    TimeModel timeModel;
+                    idModelDict.TryRemove(td.Id, out timeModel);
+                    break;
+                }
+                    
+            }
+        }
     }
 }
  

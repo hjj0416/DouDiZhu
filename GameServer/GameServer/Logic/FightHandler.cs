@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AhpilyServer;
+using AhpilyServer.Timers;
 using GameServer.Cache;
 using GameServer.Cache.Fight;
 using GameServer.Model;
@@ -96,7 +97,7 @@ namespace GameServer.Logic
                 FightRoom fightRoom = fightCache.GetRoomByUId(userId);
 
                 //玩家如果掉线退出
-                if(fightRoom.LeaveUIdList.Contains(userId))
+                if (fightRoom.LeaveUIdList.Contains(userId))
                 {
                     //直接跳过
                     Turn(fightRoom);
@@ -117,7 +118,8 @@ namespace GameServer.Logic
                     //广播给所有客户端
                     dto.RemainCardList = remainCard;
                     Brocast(fightRoom,OpCode.FIGHT,FightCode.DEAL_BRO,dto);
-                    if(remainCard.Count==0)
+                    TimeOutManager.Instance.RemoveEvent(userId);
+                    if (remainCard.Count==0)
                     {
                         //游戏结束
                         gameOver(userId,fightRoom);
@@ -128,6 +130,14 @@ namespace GameServer.Logic
                     }
                 }
             });
+        }
+
+        void TimeOut(int userId)
+        {
+            Console.WriteLine("时间到！"+userId+" "+DateTime.Now);
+            FightRoom fightRoom = fightCache.GetRoomByUId(userId);
+            Turn(fightRoom);
+            TimeOutManager.Instance.RemoveEvent(userId);
         }
 
         /// <summary>
@@ -225,10 +235,10 @@ namespace GameServer.Logic
         private void Turn(FightRoom room)
         {
             int nextUId = room.Turn();
-            room.roundModel.BiggestUId = nextUId;
             //如果下一个玩家掉线
             if(room.IsOffline(nextUId))
             {
+                //room.roundModel.BiggestUId = nextUId;
                 //下一个也掉线了 递归
                 Turn(room);
                 //TODO 掉线人物AI
@@ -237,6 +247,8 @@ namespace GameServer.Logic
             {
                 //玩家不掉线就给他发消息让他出牌
                 Brocast(room,OpCode.FIGHT,FightCode.TURN_DEAL_BRO,nextUId);
+
+                TimeOutManager.Instance.AddTimeEvent(5 * 10000000, nextUId, TimeOut);
             }
         }
 

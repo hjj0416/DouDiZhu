@@ -45,29 +45,16 @@ public class AccoutHandler : HandlerBase
                 Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
                 break;
             case -2:
-                promptMsg.Change("账号在线", Color.red);
+                promptMsg.Change("账号密码不匹配", Color.red);
                 Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
                 break;
             case -3:
-                promptMsg.Change("账号密码不匹配", Color.red);
+                promptMsg.Change("帐号在线", Color.red);
                 Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
                 break;
             default:
                 break;
         }
-
-        //if (result == "登陆成功")
-        //{
-        //    promptMsg.Change(result.ToString(), Color.green);
-        //    Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
-        //    //跳转场景
-        //    //TODO
-        //    return;
-        //}
-
-        ////登录错误
-        //promptMsg.Change(result.ToString(), Color.red);
-        //Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
     }
 
     /// <summary>
@@ -96,17 +83,5 @@ public class AccoutHandler : HandlerBase
             default:
                 break;
         }
-        //if (result == "注册成功")
-        //{
-        //    promptMsg.Change(result.ToString(), Color.green);
-        //    Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
-        //    //跳转场景
-        //    //TODO
-        //    return;
-        //}
-
-        ////登录错误
-        //promptMsg.Change(result.ToString(), Color.red);
-        //Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
     }
 }

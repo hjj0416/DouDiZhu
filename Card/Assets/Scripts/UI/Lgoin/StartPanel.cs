@@ -69,7 +69,7 @@ public class StartPanel : UIBase {
             Debug.Log("密码不能为空");
             return;
         }
-        if(inputAccount.text.Length<4||inputPsaaword.text.Length>16)
+        if(inputPsaaword.text.Length<4||inputPsaaword.text.Length>16)
         {
             promptMsg.Change("密码长度应该在4-16位之间", Color.red);
             Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);

@@ -52,8 +52,15 @@ public class CreatePanel : UIBase {
         if(string.IsNullOrEmpty(InputName.text))
         {
             //非法输入
-            promptMsg.Change("请正确输入您的名称",Color.red);
+            promptMsg.Change("名字不能为空",Color.red);
             Dispatch(AreaCode.UI,UIEvent.PROMPT_MSG,promptMsg);
+            return;
+        }
+        if(InputName.text.Length>8)
+        {
+            promptMsg.Change("名字最长为8位数", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            return;
         }
         //向服务器发送创建请求
         socketMsg.Change(OpCode.USER, UserCode.CREATE_CREQ, InputName.text);

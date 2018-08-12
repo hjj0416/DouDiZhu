@@ -63,6 +63,8 @@
     <Compile Include="NetMsgCenter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer\TimeOutManager.cs" />
+    <Compile Include="Timer\TimeOutModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

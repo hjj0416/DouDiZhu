@@ -114,8 +114,8 @@ public class MyStatePanel : StatePanel
         //通知角色模块出牌出牌
         Dispatch(AreaCode.CHARACTER,CharacterEvent.DEAL_CARD,null);
 
-        btnDeal.gameObject.SetActive(false);
-        btnNDeal.gameObject.SetActive(false);
+        //btnDeal.gameObject.SetActive(false);
+        //btnNDeal.gameObject.SetActive(false);
     }
 
     /// <summary>

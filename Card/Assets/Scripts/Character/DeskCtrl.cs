@@ -91,7 +91,7 @@ public class DeskCtrl : CharacterBase
     {
         GameObject cardGo = Object.Instantiate(cardPrefab, cardParent) as GameObject;
         cardGo.name = card.Name;
-        cardGo.transform.localPosition = new Vector2((0.3f * index), 0);
+        cardGo.transform.localPosition = new Vector2((0.25f * index), 0);
         CardCtrl cardCtrl = cardGo.GetComponent<CardCtrl>();
         cardCtrl.Init(card, index, true);
 

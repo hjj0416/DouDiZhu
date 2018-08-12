@@ -12,30 +12,39 @@ public class FightHandler : HandlerBase
         switch (subCode)
         {
             case FightCode.GET_CARD_SRES:
+                Debug.Log("GET_CARD_SRES");
                 getCards(value as List<CardDto>);
                 break;
             case FightCode.TURN_GRAB_BRO:
+                Debug.Log("TURN_GRAB_BRO");
                 turnGrabBro((int)value);
                 break;
             case FightCode.GRAB_LANDLORD_BRQ:
+                Debug.Log("GRAB_LANDLORD_BRQ");
                 grabLandlordBro(value as GrabDto);
                 break;
             case FightCode.TURN_DEAL_BRO:
+                Debug.Log("TURN_DEAL_BRO");
                 turnDealBro((int)value);
                 break;
             case FightCode.DEAL_BRO:
+                Debug.Log("DEAL_BRO");
                 dealBro(value as DealDto);
                 break;
             case FightCode.DEAL_SERS:
+                Debug.Log("DEAL_SERS");
                 dealResponse((int)value);
                 break;
             case FightCode.OVER_BRO:
+                Debug.Log("OVER_BRO");
                 overBro(value as OverDto);
                 break;
             case FightCode.PASS_SRES:
+                Debug.Log("PASS_SRES");
                 nDealResponse((int)value);
                 break;
             case FightCode.LEAVE_BRO:
+                Debug.Log("LEAVE_BRO");
                 leaveBro((int)value);
                 break;
             default:
@@ -102,7 +111,6 @@ public class FightHandler : HandlerBase
     /// <param name="result"></param>
     private void dealResponse(int result)
     {
-        //TODO 可以在这里等待服务器返回出牌成功再隐藏出牌按钮
         if (result==-1)
         {
             //玩家出的牌管不上上一个玩家出的牌
@@ -110,6 +118,10 @@ public class FightHandler : HandlerBase
             Dispatch(AreaCode.UI,UIEvent.PROMPT_MSG,promptMsg);
             //重新显示出牌按钮
             Dispatch(AreaCode.UI,UIEvent.SHOW_DEAL_BUTTON,true);
+        }else if(result==0)
+        {
+            //隐藏出牌按钮
+            Dispatch(AreaCode.UI, UIEvent.SHOW_DEAL_BUTTON, false);
         }
     }
 

@@ -23,7 +23,8 @@ public class UserHandler : HandlerBase
                 break;
         }
     }
-    private SocketMsg socketMsg = new SocketMsg(); 
+    private SocketMsg socketMsg = new SocketMsg();
+    private PromptMsg promptMsg = new PromptMsg();
 
     /// <summary>
     /// 获取信息的回应
@@ -63,6 +64,7 @@ public class UserHandler : HandlerBase
         else if(result==-1)
         {
             Debug.Log("非法登录");
+            //TODO 应该强制跳转到主界面或退出游戏
         }
         else if(result==-2)
         {
@@ -79,11 +81,20 @@ public class UserHandler : HandlerBase
     {
         if(result==-1)
         {
-
+            promptMsg.Change("角色当前非法登录！",Color.red);
+            Dispatch(AreaCode.UI,UIEvent.PROMPT_MSG,promptMsg);
+            //TODO 应该强制跳转到登录界面或退出游戏
         }
         else if(result==-2)
         {
-
+            promptMsg.Change("重复创建角色", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
+            //TODO 重复创建应该关闭创建面板
+        }
+        else if(result==-3)
+        {
+            promptMsg.Change("名字已被使用", Color.red);
+            Dispatch(AreaCode.UI, UIEvent.PROMPT_MSG, promptMsg);
         }
         else if(result==0)
         {

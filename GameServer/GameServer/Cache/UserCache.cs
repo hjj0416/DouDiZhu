@@ -34,6 +34,20 @@ namespace GameServer.Cache
         }
 
         /// <summary>
+        /// 判断是否有重名
+        /// </summary>
+        /// <returns></returns>
+        public bool isRepeatName(string name)
+        {
+            foreach (UserModel um in idModelDict.Values)
+            {
+                if (um.Name == name)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 判断此账号下是否有角色
         /// </summary>
         /// <param name="accountId"></param>

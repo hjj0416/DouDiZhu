@@ -1,4 +1,5 @@
-﻿using AhpilyServer.Concurrent;
+﻿using AhpilyServer;
+using AhpilyServer.Concurrent;
 using Protocol.Dto.Fight;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,8 @@ namespace GameServer.Cache.Fight
         /// </summary>
         private ConcurrentInt id = new ConcurrentInt(-1);
 
+        public UserCache userCache = Caches.User;
+
         /// <summary>
         /// 创建战斗房间
         /// </summary>
@@ -56,6 +59,8 @@ namespace GameServer.Cache.Fight
             foreach (int uid in uidList)
             {
                 uidRoomIDict.Add(uid,room.Id);
+                ClientPeer client = userCache.GetClientPeer(uid);
+                room.StartFight(uid,client);
             }
             idRoomDict.Add(room.Id,room);
             return room;
