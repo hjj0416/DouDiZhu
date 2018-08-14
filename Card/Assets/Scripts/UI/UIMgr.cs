@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class UIMgr : MonoBehaviour
 {
     [SerializeField] RectTransform layer;
+    [SerializeField] Canvas canvas;
 
     #region 单例
     private static UIMgr mInstance;

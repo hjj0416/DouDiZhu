@@ -90,10 +90,14 @@ public class RegistPanel : UIBase {
         AccountDto dto = new AccountDto(inputAcc.text, inputPwd.text);
         socketMsg.Change(OpCode.ACCOUNT, AccountCode.REGIST_CREQ, dto);
         Dispatch(AreaCode.NET, 0, socketMsg);
+        CloseClick();
     }
      
     void CloseClick()
     {
+        inputAcc.text = null;
+        inputPwd.text = null;
+        inputPwd2.text = null;
         setPanelActive(false);
     }
 	

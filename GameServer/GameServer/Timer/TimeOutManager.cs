@@ -78,6 +78,7 @@ namespace AhpilyServer.Timers
         //添加定时任务 XX时间后执行
         public void AddTimeEvent(long delayTime,int userId,TimeOutDelegate timeOutDelegate)
         {
+            Console.WriteLine("add timeout event   "+ userId);
             TimeOutModel model = new TimeOutModel(id.Add_Get(),userId,DateTime.Now.Ticks + delayTime, timeOutDelegate);
             idModelDict.TryAdd(model.Id, model);
         }
@@ -85,6 +86,7 @@ namespace AhpilyServer.Timers
         //移除任务
         public void RemoveEvent(int userId)
         {
+            Console.WriteLine("remove timeout event   " + userId);
             foreach (TimeOutModel td in idModelDict.Values)
             {
                 if (td.userId == userId)
@@ -94,6 +96,18 @@ namespace AhpilyServer.Timers
                 }
 
             }
+        }
+
+        public bool IsHaveEvent(int userId)
+        {
+            foreach (TimeOutModel td in idModelDict.Values)
+            {
+                if (td.userId == userId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

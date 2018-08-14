@@ -1,6 +1,7 @@
 ﻿using Protocol.Code;
 using Protocol.Constant;
 using Protocol.Dto.Fight;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,27 +13,27 @@ public class FightHandler : HandlerBase
         switch (subCode)
         {
             case FightCode.GET_CARD_SRES:
-                Debug.Log("GET_CARD_SRES");
+                Debug.Log("发牌");
                 getCards(value as List<CardDto>);
                 break;
             case FightCode.TURN_GRAB_BRO:
-                Debug.Log("TURN_GRAB_BRO");
+                Debug.Log("换地主");
                 turnGrabBro((int)value);
                 break;
             case FightCode.GRAB_LANDLORD_BRQ:
-                Debug.Log("GRAB_LANDLORD_BRQ");
+                Debug.Log("抢地主结果");
                 grabLandlordBro(value as GrabDto);
                 break;
             case FightCode.TURN_DEAL_BRO:
-                Debug.Log("TURN_DEAL_BRO");
+                Debug.Log("换人出牌");
                 turnDealBro((int)value);
                 break;
             case FightCode.DEAL_BRO:
-                Debug.Log("DEAL_BRO");
+                Debug.Log("出牌");
                 dealBro(value as DealDto);
                 break;
             case FightCode.DEAL_SERS:
-                Debug.Log("DEAL_SERS");
+                Debug.Log("出牌回应");
                 dealResponse((int)value);
                 break;
             case FightCode.OVER_BRO:
@@ -40,12 +41,18 @@ public class FightHandler : HandlerBase
                 overBro(value as OverDto);
                 break;
             case FightCode.PASS_SRES:
-                Debug.Log("PASS_SRES");
+                Debug.Log("过");
                 nDealResponse((int)value);
                 break;
             case FightCode.LEAVE_BRO:
                 Debug.Log("LEAVE_BRO");
                 leaveBro((int)value);
+                break;
+            case FightCode.START_TIMING_BRO:
+                startTimingBro(value as TimeDto);
+                break;
+            case FightCode.END_TIMEING_BRO:
+                EndTimingBro((int)value);
                 break;
             default:
                 break;
@@ -53,6 +60,24 @@ public class FightHandler : HandlerBase
     }
 
     PromptMsg promptMsg = new PromptMsg();
+
+    private void EndTimingBro(int userId)
+    {
+        Dispatch(AreaCode.UI,UIEvent.HIDE_TIMER_PANEL,userId);
+    }
+
+    /// <summary>
+    /// 开始计时广播处理
+    /// </summary>
+    /// <param name="timeDto"></param>
+    private void startTimingBro(TimeDto timeDto)
+    {
+        //计算经服务器延迟之后还有多长时间
+        long time = timeDto.time - (DateTime.Now.Ticks - timeDto.timeStamp);
+        Debug.Log(time);
+        timeDto.Change(timeDto.Id,time,timeDto.timeStamp);
+        Dispatch(AreaCode.UI,UIEvent.SHOW_TIMER_PANEL,timeDto);
+    }
 
     /// <summary>
     /// 离开的广播处理
@@ -146,11 +171,14 @@ public class FightHandler : HandlerBase
         {
             eventCode = CharacterEvent.REMOVE_MY_CARD;
         }
+        //重新显示自己的手牌
         Dispatch(AreaCode.CHARACTER, eventCode, dto.RemainCardList);
         //显示到桌面上
         Dispatch(AreaCode.CHARACTER,CharacterEvent.UPDATE_SHOW_DESK,dto.selectCardList);
         //播放出牌音效
         playDealAudio(dto.Type,dto.Weight);
+        //关闭计时器
+
     }
 
     /// <summary>
@@ -203,7 +231,7 @@ public class FightHandler : HandlerBase
     /// 转换出牌
     /// </summary>
     /// <param name="userId"></param>
-    private void turnDealBro(int userId)
+    private void turnDealBro(int userId )
     {
         if(Models.GameModel.Id==userId)
         {

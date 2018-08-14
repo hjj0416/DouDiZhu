@@ -88,6 +88,8 @@ public class MyStatePanel : StatePanel
         //给自己绑定数据
         UserDto myUserDto = Models.GameModel.MatchRoomDto.UIdUserDict[Models.GameModel.UserDto.Id];
         this.userDto = myUserDto;
+
+        SetName(userDto.Name);
     }
 
     public override void OnDestroy()

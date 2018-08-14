@@ -58,7 +58,9 @@
     <Compile Include="Dto\Fight\GrabDto.cs" />
     <Compile Include="Dto\Fight\OverDto.cs" />
     <Compile Include="Dto\Fight\PlayerDto.cs" />
+    <Compile Include="Dto\Fight\TimeDto.cs" />
     <Compile Include="Dto\MatchRoomDto.cs" />
+    <Compile Include="Dto\ResultDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

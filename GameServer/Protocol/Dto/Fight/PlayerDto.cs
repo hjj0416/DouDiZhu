@@ -31,7 +31,7 @@ namespace Protocol.Dto.Fight
         }
 
         /// <summary>
-        /// 当期卡牌数量
+        /// 当前卡牌数量
         /// </summary>
         public int CardCount
         {

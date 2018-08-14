@@ -21,6 +21,8 @@ namespace GameServer.Cache.Fight
         /// </summary>
         public Dictionary<int, ClientPeer> UIdClientDict { get; private set; }
 
+        //public Dictionary<int, List<CardDto>> LeaveUIdCardDict { get; set; }
+
         /// <summary>
         /// 存储所有玩家
         /// </summary>
@@ -52,7 +54,7 @@ namespace GameServer.Cache.Fight
         /// 构造方法 初始化
         /// </summary>
         /// <param name="id"></param>
-        public FightRoom(int id,List<int> uidList)
+        public FightRoom(int id, List<int> uidList)
         {
             this.Id = id;
             this.PlayerList = new List<PlayerDto>();
@@ -66,13 +68,13 @@ namespace GameServer.Cache.Fight
             this.TableCardList = new List<CardDto>();
             this.Multiple = 1;
             this.roundModel = new RoundModel();
-            this.UIdClientDict= new Dictionary<int, ClientPeer>();
+            this.UIdClientDict = new Dictionary<int, ClientPeer>();
         }
 
         /// <summary>
         /// 开始战斗
         /// </summary>
-        public void StartFight(int userId,ClientPeer client)
+        public void StartFight(int userId, ClientPeer client)
         {
             UIdClientDict.Add(userId, client);
         }
@@ -128,19 +130,19 @@ namespace GameServer.Cache.Fight
         /// <param name="userId"></param>
         /// <param name="cardList"></param>
         /// <returns></returns>
-        public bool DeadCard(int type,int weight,int length,int userId,List<CardDto> cardList)
+        public bool DeadCard(int type, int weight, int length, int userId, List<CardDto> cardList)
         {
             bool canDeal = false;
-            if(type==roundModel.LastCardType&&weight>roundModel.LastWeight)
+            if (type == roundModel.LastCardType && weight > roundModel.LastWeight)
             {
                 //用什么牌管什么牌
-                if(type==roundModel.LastCardType&&weight>roundModel.LastWeight)
+                if (type == roundModel.LastCardType && weight > roundModel.LastWeight)
                 {
                     //特殊的类型：顺子
-                    if (type==CardType.STRAIGHT||type==CardType.DOUBLE_STRAIGHT||type==CardType.TRIPLE_STRAIGHT)
+                    if (type == CardType.STRAIGHT || type == CardType.DOUBLE_STRAIGHT || type == CardType.TRIPLE_STRAIGHT)
                     {
                         //长度限制
-                        if(length==roundModel.LastLength)
+                        if (length == roundModel.LastLength)
                         {
                             canDeal = true;
                         }
@@ -152,35 +154,36 @@ namespace GameServer.Cache.Fight
                 }
 
             }
-            else if(type==CardType.BOOM&&roundModel.LastCardType!=CardType.BOOM)//上一个不是炸弹，出炸弹，可以出牌
+            else if (type == CardType.BOOM && roundModel.LastCardType != CardType.BOOM)//上一个不是炸弹，出炸弹，可以出牌
             {
                 canDeal = true;
             }
-            else if(type==CardType.JOKER_BOOM)//出王炸也可以出牌
+            else if (type == CardType.JOKER_BOOM)//出王炸也可以出牌
             {
                 canDeal = true;
-            }else if(userId==roundModel.BiggestUId)//当前id是当前回合最大出牌者
+            }
+            else if (userId == roundModel.BiggestUId)//当前id是当前回合最大出牌者
             {
                 canDeal = true;
             }
 
 
             //出牌
-            if(canDeal)
+            if (canDeal)
             {
                 //移除手牌
-                RemoveCards(userId,cardList);
+                RemoveCards(userId, cardList);
                 //可能翻倍
-                if(type==CardType.BOOM)
+                if (type == CardType.BOOM)
                 {
                     Multiple *= 2;
                 }
-                else if(type == CardType.JOKER_BOOM)
+                else if (type == CardType.JOKER_BOOM)
                 {
                     Multiple *= 4;
                 }
                 //保存回合信息
-                roundModel.Change(length,type,weight,userId);
+                roundModel.Change(length, type, weight, userId);
             }
             return canDeal;
         }
@@ -190,7 +193,7 @@ namespace GameServer.Cache.Fight
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="cardList"></param>
-        private void RemoveCards(int userId,List<CardDto> cardList)
+        public void RemoveCards(int userId, List<CardDto> cardList)
         {
             //获取玩家现有手牌
             List<CardDto> currList = getUserCards(userId);
@@ -198,9 +201,9 @@ namespace GameServer.Cache.Fight
             List<CardDto> list = new List<CardDto>();
             foreach (var select in cardList)
             {
-                for(int i= currList.Count-1;i>=0;i--)
+                for (int i = currList.Count - 1; i >= 0; i--)
                 {
-                    if(currList[i].Name==select.Name)
+                    if (currList[i].Name == select.Name)
                     {
                         list.Add(currList[i]);
                         break;
@@ -213,11 +216,11 @@ namespace GameServer.Cache.Fight
             }
         }
 
-       /// <summary>
-       /// 获取玩家的现有手牌
-       /// </summary>
-       /// <param name="userId"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 获取玩家的现有手牌
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public List<CardDto> getUserCards(int userId)
         {
             foreach (PlayerDto player in PlayerList)
@@ -226,6 +229,21 @@ namespace GameServer.Cache.Fight
                     return player.CardList;
             }
             throw new Exception("不存在这个玩家");
+        }
+
+
+
+        /// <summary>
+        /// 返回玩家的第一张手牌
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<CardDto> getUserFirstCard(int userId)
+        {
+            List<CardDto> cards = new List<CardDto>();
+            CardDto card = getUserCards(userId)[0];
+            cards.Add(card);
+            return cards;
         }
 
         /// <summary>
@@ -262,7 +280,7 @@ namespace GameServer.Cache.Fight
         {
             foreach (PlayerDto player in PlayerList)
             {
-                if (player.UserId==userId)
+                if (player.UserId == userId)
                 {
                     //找对人了
                     player.Identity = Identity.LANDLORD;
@@ -287,7 +305,7 @@ namespace GameServer.Cache.Fight
         {
             foreach (PlayerDto player in PlayerList)
             {
-                if(player.UserId==userId)
+                if (player.UserId == userId)
                 {
                     return player;
                 }
@@ -311,7 +329,7 @@ namespace GameServer.Cache.Fight
             List<int> uIds = new List<int>();
             foreach (PlayerDto player in PlayerList)
             {
-                if(player.Identity==identity)
+                if (player.Identity == identity)
                 {
                     uIds.Add(player.UserId);
                 }
@@ -351,10 +369,10 @@ namespace GameServer.Cache.Fight
         /// </summary>
         /// <param name="cardList"></param>
         /// <param name="asc"></param>
-        public void sortCard(List<CardDto> cardList,bool asc=true)
+        public void sortCard(List<CardDto> cardList, bool asc = true)
         {
             cardList.Sort(
-                delegate(CardDto a,CardDto b)
+                delegate (CardDto a, CardDto b)
                 {
                     if (asc)
                         return a.Weight.CompareTo(b.Weight);
@@ -367,9 +385,9 @@ namespace GameServer.Cache.Fight
         /// 默认升序
         /// </summary>
         /// <param name="asc"></param>
-        public void Sort(bool asc=true)
+        public void Sort(bool asc = true)
         {
-            sortCard(PlayerList[0].CardList,asc);
+            sortCard(PlayerList[0].CardList, asc);
             sortCard(PlayerList[1].CardList, asc);
             sortCard(PlayerList[2].CardList, asc);
         }

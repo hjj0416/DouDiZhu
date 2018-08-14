@@ -91,7 +91,7 @@ namespace Protocol.Dto
                     LeftId = UIdList[2];
                     RightId = UIdList[1];
                 }
-                // a x b
+                // b x a
                 if (UIdList[1] == myUserId)
                 {
                     LeftId = UIdList[0];

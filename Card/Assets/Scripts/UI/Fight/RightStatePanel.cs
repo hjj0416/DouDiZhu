@@ -35,6 +35,8 @@ public class RightStatePanel : StatePanel {
             if (room.ReadyUIdList.Contains(rightId))
             {
                 ReadyState();
+                SetName(userDto.Name);
+                Debug.Log("RightPanelStart");
             }
         }
         else

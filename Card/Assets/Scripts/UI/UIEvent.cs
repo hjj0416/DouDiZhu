@@ -14,6 +14,8 @@ public class UIEvent{
     public const int SHOW_GRAB_BUTTON = 12;//显示抢地主按钮
     public const int SHOW_DEAL_BUTTON = 13;//显示出牌按钮
     public const int SHOW_OVER_PANEL = 14;//显示结束面板
+    public const int SHOW_TIMER_PANEL = 15;//显示计时器
+    public const int HIDE_TIMER_PANEL = 16;//关闭计时器
 
     public const int SET_TABLE_CARD = 100;//设置底牌
     public const int SET_LEFT_PLAYER_DATA = 101;//设置左边角色的数据

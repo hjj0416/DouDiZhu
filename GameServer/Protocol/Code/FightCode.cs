@@ -25,5 +25,8 @@ namespace Protocol.Code
         public const int OVER_BRO = 10;//游戏结束的广播
 
         public const int GET_CARD_SRES = 11;//服务器给客户端卡牌的响应
+
+        public const int START_TIMING_BRO = 12;//服务器给客户端广播开始计时
+        public const int END_TIMEING_BRO = 13;//服务器给客户端广播结束计时
     }
 }

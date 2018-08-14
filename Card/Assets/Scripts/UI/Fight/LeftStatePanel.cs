@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeftStatePanel : StatePanel
 {
@@ -38,6 +39,8 @@ public class LeftStatePanel : StatePanel
             if(room.ReadyUIdList.Contains(leftId))
             {
                 ReadyState();
+                Debug.Log("LeftPanelStart");
+                SetName(userDto.Name);
             }
         }
         else

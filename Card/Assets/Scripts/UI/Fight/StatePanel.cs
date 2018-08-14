@@ -15,6 +15,8 @@ public class StatePanel : UIBase
         Bind(UIEvent.PLAYER_ENTER);
         Bind(UIEvent.PLAYER_CHAT);
         Bind(UIEvent.PLAY_CHANGE_IDENTITY);
+        Bind(UIEvent.SHOW_TIMER_PANEL);
+        Bind(UIEvent.HIDE_TIMER_PANEL);
     }
 
     public override void Execute(int eventCode, object message)
@@ -51,7 +53,11 @@ public class StatePanel : UIBase
                         break;
                     int userId = (int)message;
                     if (userDto.Id == userId)
+                    {
                         setPanelActive(true);
+                        SetName(userDto.Name);
+                        //Debug.Log("statePanelEnter");
+                    }
                     break;
                 }
             case UIEvent.PLAYER_CHAT:
@@ -72,6 +78,26 @@ public class StatePanel : UIBase
                         setIdentity(1);
                     break;
                 }
+            case UIEvent.SHOW_TIMER_PANEL:
+                {
+                    if (userDto == null)
+                        break;
+                    TimeDto timeDto = message as TimeDto;
+                    if (userDto.Id == timeDto.Id)
+                    {
+                        ShowTimer(timeDto.time);
+                    }
+                    break;
+                }
+            case UIEvent.HIDE_TIMER_PANEL:
+                {
+                    if (userDto == null)
+                        break;
+                    int userId = (int)message;
+                    if (userDto.Id == userId)
+                        setTimerActive(false);
+                        break;
+               }
             default:
                 break;
         }
@@ -86,6 +112,8 @@ public class StatePanel : UIBase
     protected Text txtReady;
     protected Image imgChat;
     protected Text txtChat;
+    protected Text txtTime;
+    protected Text txtName;
 
     protected virtual void Start()
     {
@@ -93,15 +121,24 @@ public class StatePanel : UIBase
         txtReady = transform.Find("txtReady").GetComponent<Text>();
         imgChat = transform.Find("imgChat").GetComponent<Image>();
         txtChat = imgChat.transform.Find("Text").GetComponent<Text>();
+        txtTime = transform.Find("txtTime").GetComponent<Text>();
+        txtName = transform.Find("txtName").GetComponent<Text>();
+
 
         //默认状态
         txtReady.gameObject.SetActive(false);
         imgChat.gameObject.SetActive(false);
+        txtTime.gameObject.SetActive(false);
     }
 
     protected virtual void ReadyState()
     {
         txtReady.gameObject.SetActive(true);
+    }
+
+    protected virtual void SetName(string name)
+    {
+        txtName.text = name;
     }
 
     /// <summary>
@@ -122,35 +159,81 @@ public class StatePanel : UIBase
     }
 
     /// <summary>
-    /// 显示时间
+    /// 聊天界面显示时间
     /// </summary>
-    protected int showTime = 3;
+    protected int ChatShowTime = 3;
     /// <summary>
     /// 计时器
     /// </summary>
-    protected float timer = 0f;
+    protected float timer1 = 0f;
+
     /// <summary>
-    /// 是否显示
+    /// 是否显示聊天
     /// </summary>
-    private bool isShow = false;
+    private bool isChatShow = false;
+
+    /// <summary>
+    /// 是否显示计时器
+    /// </summary>
+    protected bool isTimerShow = false;
+    /// <summary>
+    /// 计时器显示的时间
+    /// </summary>
+    protected float TimerShowTime;
+    /// <summary>
+    /// 保存上次更新界面时的时间
+    /// </summary>
+    private int txtTimer = -1;
 
     protected virtual void Update()
     {
-        if (isShow == true)
+        if (isChatShow == true)
         {
-            timer += Time.deltaTime;
-            if (timer >= showTime)
+            timer1 += Time.deltaTime;
+            if (timer1 >= ChatShowTime)
             {
                 setChatActive(false);
-                timer = 0f;
-                isShow = false;
+                timer1 = 0f;
+                isChatShow = false;
             }
+        }
+        if (isTimerShow)
+        {
+            TimerShowTime = TimerShowTime - Time.deltaTime;
+            if (TimerShowTime < 0)
+            {
+               // setTimerActive(false);
+                isTimerShow = false;
+            }
+            UpdateTime(TimerShowTime);
         }
     }
 
     protected void setChatActive(bool active)
     {
         imgChat.gameObject.SetActive(active);
+    }
+
+    protected void setTimerActive(bool active)
+    {
+        txtTime.gameObject.SetActive(active);
+    }
+
+    /// <summary>
+    /// 每秒刷新显示界面计时器
+    /// </summary>
+    /// <param name="time"></param>
+    private void UpdateTime(float time)
+    {
+        if (time < 0)       
+            return;
+
+        int tTime = (int)time;
+        if(tTime!=txtTimer)
+        {
+            txtTime.text = tTime.ToString();
+            txtTimer = tTime; ;
+        }
     }
 
     /// <summary>
@@ -163,7 +246,20 @@ public class StatePanel : UIBase
         txtChat.text = text;
         //显示动画
         setChatActive(true);
-        isShow = true;
+        isChatShow = true;
+    }
+
+    /// <summary>
+    /// 外界调用的 显示计时器
+    /// </summary>
+    /// <param name="time"></param>
+    protected void ShowTimer(long time)
+    {
+        //转换为秒
+        TimerShowTime = time/10000000.0f;
+        txtTimer = -1;
+        setTimerActive(true);
+        isTimerShow = true;
     }
 
 }
